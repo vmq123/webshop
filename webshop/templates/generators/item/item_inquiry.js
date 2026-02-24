@@ -31,14 +31,15 @@ frappe.ready(() => {
 				fieldtype: 'Data',
 				label: __('Subject'),
 				fieldname: 'subject',
+				hidden:1,
 				reqd: 1
 			},
-			{
-				fieldtype: 'Text',
-				label: __('Message'),
-				fieldname: 'message',
-				reqd: 1
-			}
+			// {
+			// 	fieldtype: 'Text',
+			// 	label: __('Message'),
+			// 	fieldname: 'message',
+			// 	reqd: 1
+			// }
 		],
 		primary_action: send_inquiry,
 		primary_action_label: __('Send')
@@ -48,17 +49,28 @@ frappe.ready(() => {
 		const values = d.get_values();
 		const doc = Object.assign({}, values);
 		delete doc.subject;
-		delete doc.message;
+		// delete doc.message;
 
 		d.hide();
 
-		frappe.call('webshop.webshop.shopping_cart.cart.create_lead_for_item_inquiry', {
-			lead: doc,
-			subject: values.subject,
-			message: values.message
+		// frappe.call('webshop.webshop.shopping_cart.cart.create_lead_for_item_inquiry', {
+		// 	lead: doc,
+		// 	subject: values.subject,
+		// 	message: values.message
+		// }).then(r => {
+		// 	if (r.message) {
+		// 		d.clear();
+		// 	}
+		// });
+		frappe.call('utilplus.controllers.lead_api.new_lead', {
+			contact_name: values.lead_name,
+			mobile_number: values.phone,
+			ref_link: values.subject,
+			doctype: "Website Item"
 		}).then(r => {
 			if (r.message) {
 				d.clear();
+				frappe.msgprint(r.message)
 			}
 		});
 	}
@@ -66,7 +78,8 @@ frappe.ready(() => {
 	$('.btn-inquiry').click((e) => {
 		const $btn = $(e.target);
 		const item_code = $btn.data('item-code');
-		d.set_value('subject', 'Inquiry about ' + item_code);
+		// d.set_value('subject', 'Inquiry about ' + item_code);
+		d.set_value('subject', item_code);
 		if (!['Administrator', 'Guest'].includes(frappe.session.user)) {
 			d.set_value('email_id', frappe.session.user);
 			d.set_value('lead_name', frappe.get_cookie('full_name'));
