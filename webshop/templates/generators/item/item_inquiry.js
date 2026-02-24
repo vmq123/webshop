@@ -8,18 +8,18 @@ frappe.ready(() => {
 				fieldname: 'lead_name',
 				reqd: 1
 			},
-			{
-				fieldtype: 'Data',
-				label: __('Organization Name'),
-				fieldname: 'company_name',
-			},
-			{
-				fieldtype: 'Data',
-				label: __('Email'),
-				fieldname: 'email_id',
-				options: 'Email',
-				reqd: 1
-			},
+			// {
+			// 	fieldtype: 'Data',
+			// 	label: __('Organization Name'),
+			// 	fieldname: 'company_name',
+			// },
+			// {
+			// 	fieldtype: 'Data',
+			// 	label: __('Email'),
+			// 	fieldname: 'email_id',
+			// 	options: 'Email',
+			// 	reqd: 1
+			// },
 			{
 				fieldtype: 'Data',
 				label: __('Phone Number'),
