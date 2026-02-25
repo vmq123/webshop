@@ -62,11 +62,11 @@ frappe.ready(() => {
 		// 		d.clear();
 		// 	}
 		// });
-		frappe.call('utilplus.controllers.lead_api.new_lead', {
-			contact_name: values.lead_name,
+		frappe.call('utilplus.controllers.lead_api.save_contact_us_response', {
+			full_name: values.lead_name,
 			mobile_number: values.phone,
 			ref_link: values.subject,
-			doctype: "Website Item"
+			doc_type: "Website Item"
 		}).then(r => {
 			if (r.message) {
 				d.clear();
