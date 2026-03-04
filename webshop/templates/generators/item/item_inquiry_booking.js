@@ -1,0 +1,73 @@
+frappe.ready(() => {
+	const d = new frappe.ui.Dialog({
+		title: __('Contact Us'),
+		fields: [
+			{
+				fieldtype: 'Data',
+				label: __('Full Name'),
+				fieldname: 'lead_name',
+				reqd: 1
+			},
+			{
+				fieldtype: 'Data',
+				label: __('Phone Number'),
+				fieldname: 'phone',
+				options: 'Phone',
+				reqd: 1
+			},
+			{
+				fieldtype: 'Data',
+				label: __('Subject'),
+				fieldname: 'subject',
+				hidden:0,
+				reqd: 1
+			},
+		],
+		primary_action: send_inquiry,
+		primary_action_label: __('Send')
+	});
+
+	function send_inquiry() {
+		const values = d.get_values();
+		const doc = Object.assign({}, values);
+		delete doc.subject;
+		// delete doc.message;
+
+		d.hide();
+
+		// frappe.call('webshop.webshop.shopping_cart.cart.create_lead_for_item_inquiry', {
+		// 	lead: doc,
+		// 	subject: values.subject,
+		// 	message: values.message
+		// }).then(r => {
+		// 	if (r.message) {
+		// 		d.clear();
+		// 	}
+		// });
+		frappe.call('utilplus.controllers.lead_api.save_contact_us_response', {
+			full_name: values.lead_name,
+			mobile_number: values.phone,
+			ref_link: values.subject,
+			doc_type: "Website Item"
+		}).then(r => {
+			if (r.message) {
+				d.clear();
+				frappe.msgprint(r.message)
+			}
+		});
+	}
+
+	$('.btn-inquiry').click((e) => {
+		const $btn = $(e.target);
+		const item_code = $btn.data('item-code');
+		const tg_price_dn = $btn.data('tg-price-dn');
+		d.set_value('subject', tg_price_dn);
+		// d.set_value('subject', item_code);
+		if (!['Administrator', 'Guest'].includes(frappe.session.user)) {
+			d.set_value('email_id', frappe.session.user);
+			d.set_value('lead_name', frappe.get_cookie('full_name'));
+		}
+
+		d.show();
+	});
+});
