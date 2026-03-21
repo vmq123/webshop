@@ -10,6 +10,7 @@ from frappe.utils import cint, cstr, flt, get_fullname
 from frappe.utils.nestedset import get_root_of
 
 from erpnext.accounts.utils import get_account_name
+from utilplus.generic.vms import init_named_log
 from webshop.webshop.doctype.webshop_settings.webshop_settings import (
     get_shopping_cart_settings,
 )
@@ -20,6 +21,7 @@ from erpnext.selling.doctype.quotation.quotation import _make_sales_order
 class WebsitePriceListMissingError(frappe.ValidationError):
     pass
 
+logger = init_named_log("webshop.shopping_cart.cart.py")
 
 def set_cart_count(quotation=None):
 	if cint(frappe.db.get_singles_value("Webshop Settings", "enabled")):
@@ -154,6 +156,7 @@ def request_for_quotation():
 
 @frappe.whitelist()
 def update_cart(item_code, qty, additional_notes=None, with_items=False):
+	logger.debug(f"update_cart: item_code={item_code} qty={qty}")
 	quotation = _get_cart_quotation()
 
 	empty_card = False
@@ -166,12 +169,15 @@ def update_cart(item_code, qty, additional_notes=None, with_items=False):
 			empty_card = True
 
 	else:
+		logger.debug(f"update_cart: begin getting warehouse")
 		warehouse = frappe.get_cached_value(
 			"Website Item", {"item_code": item_code}, "website_warehouse"
 		)
-
+		logger.debug(f"update_cart: warehouse={warehouse}")
 		quotation_items = quotation.get("items", {"item_code": item_code})
+		logger.debug(f"update_cart: quotation_items={quotation_items}")
 		if not quotation_items:
+			logger.debug(f"update_cart: item_code not exist in quotation")
 			quotation.append(
 				"items",
 				{
@@ -183,6 +189,7 @@ def update_cart(item_code, qty, additional_notes=None, with_items=False):
 				},
 			)
 		else:
+			logger.debug(f"update_cart: item_code exist in quotation")
 			quotation_items[0].qty = qty
 			quotation_items[0].warehouse = warehouse
 			quotation_items[0].additional_notes = additional_notes
@@ -200,6 +207,7 @@ def update_cart(item_code, qty, additional_notes=None, with_items=False):
 	set_cart_count(quotation)
 
 	if cint(with_items):
+		logger.debug(f"update_cart: with_items={with_items}")
 		context = get_cart_quotation(quotation)
 		return {
 			"items": frappe.render_template(
@@ -213,6 +221,7 @@ def update_cart(item_code, qty, additional_notes=None, with_items=False):
 			),
 		}
 	else:
+		logger.debug(f"update_cart: not with_items")
 		return {"name": quotation.name}
 
 
@@ -462,7 +471,7 @@ def apply_cart_settings(party=None, quotation=None):
 
 def set_price_list_and_rate(quotation, cart_settings):
 	"""set price list based on billing territory"""
-
+	logger.debug(f"set_price_list_and_rate: begin")
 	_set_price_list(cart_settings, quotation)
 
 	# reset values
@@ -472,8 +481,10 @@ def set_price_list_and_rate(quotation, cart_settings):
 	for item in quotation.get("items"):
 		item.price_list_rate = item.discount_percentage = item.rate = item.amount = None
 
+	# logger.debug(f"set_price_list_and_rate: begin run_method set_price_list_and_item_details")
 	# refetch values
 	quotation.run_method("set_price_list_and_item_details")
+	# logger.debug(f"set_price_list_and_rate: end run_method set_price_list_and_item_details")
 
 	if hasattr(frappe.local, "cookie_manager"):
 		# set it in cookies for using in product page

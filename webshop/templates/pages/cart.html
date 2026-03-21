@@ -46,8 +46,8 @@
 				<div class="row mt-2">
 					<div class="col-3">
 						{% if cart_settings.enable_checkout %}
-							<a class="btn btn-primary-light font-md" href="/orders">
-								{{ _('Past Orders') }}
+							<a class="btn btn-primary-light btn-empty-cart font-md">
+								{{ _('Empty Card') }}
 							</a>
 						{% else %}
 							<a class="btn btn-primary-light font-md" href="/quotations">
@@ -103,8 +103,6 @@
 						{% include "templates/includes/cart/place_order.html" %}
 					</div>
 				</div>
-
-				{% include "templates/includes/cart/cart_address.html" %}
 			</div>
 		</div>
 		{% endif %}

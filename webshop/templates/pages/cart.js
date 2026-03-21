@@ -12,12 +12,19 @@ $.extend(shopping_cart, {
 	},
 
 	bind_events: function() {
+		shopping_cart.bind_empty_cart();
 		shopping_cart.bind_place_order();
 		shopping_cart.bind_request_quotation();
 		shopping_cart.bind_change_qty();
 		shopping_cart.bind_remove_cart_item();
 		shopping_cart.bind_change_notes();
 		shopping_cart.bind_coupon_code();
+	},
+
+	bind_empty_cart: function() {
+		$(".btn-empty-cart").on("click", function() {
+			shopping_cart.empty_cart(this);
+		});
 	},
 
 	bind_place_order: function() {
@@ -138,31 +145,75 @@ $.extend(shopping_cart, {
 		});
 	},
 
+	empty_cart: function(btn) {
+		shopping_cart.freeze();
+		frappe.confirm(
+			__('Are you sure you want to empty cart?'),
+			() => {
+				// Action if "Yes" is clicked
+				frappe.call({
+					type: "POST",
+					method: "touropt.controllers.webshop_cart.empty_cart_for_cart_id",
+					args: {
+						webshop_cart_id: frappe.get_cookie("webshop_cart_id")
+					},
+					btn: btn,
+					callback: function(r) {
+						if(r.exc) {
+							shopping_cart.unfreeze();
+							var msg = "";
+							if(r._server_messages) {
+								msg = JSON.parse(r._server_messages || []).join("<br>");
+							}
+
+							$("#cart-error")
+								.empty()
+								.html(msg || frappe._("Something went wrong!"))
+								.toggle(true);
+							window.location.href = '/all-products';
+						} else {
+							$(btn).hide();
+							window.location.href = '/all-products';
+						}
+					}
+				});
+			},
+			() => {
+				shopping_cart.unfreeze();
+			}
+		);
+	},
+
 	place_order: function(btn) {
 		shopping_cart.freeze();
-
-		return frappe.call({
-			type: "POST",
-			method: "webshop.webshop.shopping_cart.cart.place_order",
-			btn: btn,
-			callback: function(r) {
-				if(r.exc) {
-					shopping_cart.unfreeze();
-					var msg = "";
-					if(r._server_messages) {
-						msg = JSON.parse(r._server_messages || []).join("<br>");
-					}
-
-					$("#cart-error")
-						.empty()
-						.html(msg || frappe._("Something went wrong!"))
-						.toggle(true);
-				} else {
-					$(btn).hide();
-					window.location.href = '/orders/' + encodeURIComponent(r.message);
-				}
-			}
+		frappe.require(['/assets/touropt/js/webshop_place_order_3_steps.js'], () => {
+			const d = place_order_dialog()
+			d.show();
 		});
+		// const d = place_order_dialog(btn)
+		// d.show();
+		// return frappe.call({
+		// 	type: "POST",
+		// 	method: "webshop.webshop.shopping_cart.cart.place_order",
+		// 	btn: btn,
+		// 	callback: function(r) {
+		// 		if(r.exc) {
+		// 			shopping_cart.unfreeze();
+		// 			var msg = "";
+		// 			if(r._server_messages) {
+		// 				msg = JSON.parse(r._server_messages || []).join("<br>");
+		// 			}
+
+		// 			$("#cart-error")
+		// 				.empty()
+		// 				.html(msg || frappe._("Something went wrong!"))
+		// 				.toggle(true);
+		// 		} else {
+		// 			$(btn).hide();
+		// 			window.location.href = '/orders/' + encodeURIComponent(r.message);
+		// 		}
+		// 	}
+		// });
 	},
 
 	request_quotation: function(btn) {
@@ -227,4 +278,106 @@ frappe.ready(function() {
 function show_terms() {
 	var html = $(".cart-terms").html();
 	frappe.msgprint(html);
-}
+};
+
+function place_order_dialog(){
+	let current_step = 1;
+	let d = new frappe.ui.Dialog({
+		title: __('Customer Information'),
+		fields: [
+			// --- STEP 1 FIELDS ---
+			{
+				label: __('Full Name'),
+				fieldname: 'full_name',
+				fieldtype: 'Data',
+				reqd: 1
+			},
+			{
+				label: __('Phone Number'),
+				fieldname: 'phone_number',
+				fieldtype: 'Data'
+			},
+			// --- STEP 2 FIELDS (Hidden initially) ---
+			{
+				fieldtype: 'Section Break',
+				fieldname: 'step_2_section',
+				hidden: 1
+			},
+			{
+				label: __('Payment instruction'),
+				fieldname: 'payment_instruction_html',
+				fieldtype: 'HTML',
+				options: `
+					<div style="text-align: center;">
+						<img src="/files/Company_QR_01.png" style="width: 200px; margin-bottom: 10px;">
+						<h4>Please scan for payment</h4>
+						<p>Then press OK</p>
+					</div>
+				`,
+				hidden: 1
+			}
+		],
+		primary_action_label: 'Next',
+		primary_action: () => {
+			if (current_step === 1) {
+				// Logic for Step 1 -> Step 2
+				d.set_df_property('full_name', 'hidden', 1);
+				d.set_df_property('phone_number', 'hidden', 1);
+
+				// 2. Show Step 2 Fields
+				d.set_df_property('step_2_section', 'hidden', 0);
+				d.set_df_property('payment_instruction_html', 'hidden', 0);
+
+				// 3. Update Dialog UI
+				d.set_title(__('Payment instruction'));
+				// d.set_primary_action_label('OK');
+				current_step = 2;
+				d.set_primary_action('OK', function(values) {
+					// frappe.utils.set_cookie("cart_count", "", -1);
+					frappe.call({
+						type: "POST",
+						method: "touropt.controllers.webshop_cart.place_order_for_cart_id",
+						args: {
+							webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
+							full_name: values.full_name,
+							phone_number: values.phone_number
+						},
+						// btn: btn,
+						freeze: true,
+						callback: function(r) {
+							if(r.exc) {
+								shopping_cart.unfreeze();
+								var msg = "";
+								if(r._server_messages) {
+									msg = JSON.parse(r._server_messages || []).join("<br>");
+								}
+
+								$("#cart-error")
+									.empty()
+									.html(msg || frappe._("Something went wrong!"))
+									.toggle(true);
+							} else {
+								// $(btn).hide();
+								shopping_cart.unfreeze();
+								d.hide();
+								// window.location.href = '/orders/' + encodeURIComponent(r.message);
+								frappe.call('webshop.webshop.api.get_guest_redirect_on_action').then((res) => {
+									window.location.href = res.message || "/all-products";
+								});
+							}
+						}
+					});
+				});
+			} else {
+				shopping_cart.unfreeze();
+				d.hide();
+			}
+		},
+		secondary_action_label: __('Cancel'),
+		secondary_action() {
+			shopping_cart.unfreeze();
+			d.hide();
+		}
+	});
+	return d;
+};
