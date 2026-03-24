@@ -8,6 +8,8 @@ sitemap = 1
 
 def get_context(context):
 	# Add homepage as parent
+	if hasattr(frappe.local, "cookie_manager"):
+		frappe.local.cookie_manager.set_cookie("preferred_language", "vi")
 	context.body_class = "product-page"
 	context.parents = [{"name": frappe._("Home"), "route": "/"}]
 

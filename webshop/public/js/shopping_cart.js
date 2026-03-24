@@ -230,6 +230,7 @@ $.extend(shopping_cart, {
 			$btn.prop('disabled', true);
 
 			if (frappe.session.user==="Guest") {
+				// TODO: enable for guest
 				if (localStorage) {
 					localStorage.setItem("last_visited", window.location.pathname);
 				}
