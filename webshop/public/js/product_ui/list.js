@@ -167,7 +167,7 @@ webshop.ProductList = class {
 			return `
 				<a href="/${ item.route || '#' }">
 					<div class="btn btn-sm btn-explore-variants btn mb-0 mt-0">
-						${ __("Explore") }
+						${ __("Khám phá") }
 					</div>
 				</a>
 			`;
@@ -184,7 +184,7 @@ webshop.ProductList = class {
 							<use href="#icon-assets"></use>
 						</svg>
 					</span>
-					${ settings.enable_checkout ? __("Add to Cart") :  __("Add to Quote") }
+					${ settings.enable_checkout ? __("Thêm vào giỏ hàng") :  __("Add to Quote") }
 				</div>
 
 				<div class="cart-indicator list-indicator ${item.in_cart ? '' : 'hidden'}">

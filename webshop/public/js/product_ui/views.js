@@ -21,7 +21,7 @@ webshop.ProductView =  class {
 			<div class="toolbar d-flex">
 			</div>
 		`);
-		this.prepare_search();
+		// this.prepare_search();
 		this.prepare_view_toggler();
 
 		new webshop.ProductSearch();
@@ -166,13 +166,13 @@ webshop.ProductView =  class {
 			paging_html += `
 				<button class="btn btn-default btn-prev" data-start="${ start - page_length }"
 					style="float: left" ${prev_disable}>
-					${ __("Prev") }
+					${ __("Trước") }
 				</button>`;
 
 			paging_html += `
 				<button class="btn btn-default btn-next" data-start="${ start + page_length }"
 					${next_disable}>
-					${ __("Next") }
+					${ __("Tiếp") }
 				</button>
 			`;
 

@@ -29,7 +29,7 @@ class ItemConfigure {
 		});
 
 		this.dialog = new frappe.ui.Dialog({
-			title: __('Select Variant for {0}', [this.item_name]),
+			title: __('Tùy chọn cho {0}', [this.item_name]),
 			fields,
 			on_hide: () => {
 				set_continue_configuration();
@@ -203,7 +203,7 @@ class ItemConfigure {
 				<span class="mr-2">
 					${frappe.utils.icon('assets', 'md')}
 				</span>
-				${__("Add to Cart")}
+				${__("Thêm vào giỏ hàng")}
 			</button>
 		` : '';
 
@@ -315,9 +315,9 @@ function set_continue_configuration() {
 	const { itemCode } = $btn_configure.data();
 
 	if (localStorage.getItem(`configure:${itemCode}`)) {
-		$btn_configure.text(__('Continue Selection'));
+		$btn_configure.text(__('Chọn tiếp'));
 	} else {
-		$btn_configure.text(__('Select Variant'));
+		$btn_configure.text(__('Tùy chọn'));
 	}
 }
 

@@ -187,33 +187,9 @@ $.extend(shopping_cart, {
 	place_order: function(btn) {
 		shopping_cart.freeze();
 		frappe.require(['/assets/touropt/js/webshop_place_order_3_steps.js'], () => {
-			const d = place_order_dialog()
+			const d = place_order_dialog(btn)
 			d.show();
 		});
-		// const d = place_order_dialog(btn)
-		// d.show();
-		// return frappe.call({
-		// 	type: "POST",
-		// 	method: "webshop.webshop.shopping_cart.cart.place_order",
-		// 	btn: btn,
-		// 	callback: function(r) {
-		// 		if(r.exc) {
-		// 			shopping_cart.unfreeze();
-		// 			var msg = "";
-		// 			if(r._server_messages) {
-		// 				msg = JSON.parse(r._server_messages || []).join("<br>");
-		// 			}
-
-		// 			$("#cart-error")
-		// 				.empty()
-		// 				.html(msg || frappe._("Something went wrong!"))
-		// 				.toggle(true);
-		// 		} else {
-		// 			$(btn).hide();
-		// 			window.location.href = '/orders/' + encodeURIComponent(r.message);
-		// 		}
-		// 	}
-		// });
 	},
 
 	request_quotation: function(btn) {

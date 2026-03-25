@@ -47,7 +47,7 @@
 					<div class="col-3">
 						{% if cart_settings.enable_checkout %}
 							<a class="btn btn-primary-light btn-empty-cart font-md">
-								{{ _("Empty Card") }}
+								{{ _("Empty Cart") }}
 							</a>
 						{% else %}
 							<a class="btn btn-primary-light font-md" href="/quotations">
@@ -87,7 +87,7 @@
 				{% if show_coupon_code == 1%}
 					<div class="mb-3">
 						<div class="row no-gutters">
-							<input type="text" class="txtcoupon form-control mr-3 w-50 font-md" placeholder="Enter Coupon Code" name="txtcouponcode"  ></input>
+							<input type="text" class="txtcoupon form-control mr-3 w-50 font-md" placeholder="Nhập mã ưu đãi" name="txtcouponcode"  ></input>
 							<button class="btn btn-primary btn-sm bt-coupon font-md">{{ _("Apply Coupon Code") }}</button>
 							<input type="hidden" class="txtreferral_sales_partner font-md" placeholder="Enter Sales Partner" name="txtreferral_sales_partner" type="text"></input>
 							</div>
