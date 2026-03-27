@@ -198,7 +198,7 @@ webshop.ProductList = class {
 						${ item.in_cart ? '' : 'hidden' }"
 						data-item-code="${ item.item_code }"
 						style="padding: 0.25rem 1rem; min-width: 135px;">
-						${ settings.enable_checkout ? __("Go to Cart") :  __("Go to Quote") }
+						${ settings.enable_checkout ? __("Xem giỏ hàng") :  __("Go to Quote") }
 					</div>
 				</a>
 			`;
