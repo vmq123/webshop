@@ -58,6 +58,7 @@
 		{% endif %}
 
 		<!-- Offers -->
+		<!--
 		{% if doc.offers %}
 			<br>
 			<div class="offers-heading mb-4">
@@ -90,7 +91,7 @@
 				{% endfor %}
 			</div>
 		{% endif %}
-
+		-->
 		<!-- Add to Cart / View in Cart, Contact Us -->
 		<div class="mt-6 mb-5">
 			<div class="mb-4 d-flex">
@@ -140,39 +141,39 @@
 				}
 			});
 		});
+		
+		// $('.page_content').on('click', '.offer-details', (e) => {
+		// 	// Bind action on More link in Offers
+		// 	const $btn = $(e.currentTarget);
+		// 	$btn.prop('disabled', true);
 
-		$('.page_content').on('click', '.offer-details', (e) => {
-			// Bind action on More link in Offers
-			const $btn = $(e.currentTarget);
-			$btn.prop('disabled', true);
+		// 	var d = new frappe.ui.Dialog({
+		// 		title: __($btn.data('offer-title')),
+		// 		fields: [
+		// 			{
+		// 				fieldname: 'offer_details',
+		// 				fieldtype: 'HTML'
+		// 			},
+		// 			{
+		// 				fieldname: 'section_break',
+		// 				fieldtype: 'Section Break'
+		// 			}
+		// 		]
+		// 	});
 
-			var d = new frappe.ui.Dialog({
-				title: __($btn.data('offer-title')),
-				fields: [
-					{
-						fieldname: 'offer_details',
-						fieldtype: 'HTML'
-					},
-					{
-						fieldname: 'section_break',
-						fieldtype: 'Section Break'
-					}
-				]
-			});
+		// 	frappe.call({
+		// 		method: 'webshop.webshop.doctype.website_offer.website_offer.get_offer_details',
+		// 		args: {
+		// 			offer_id: $btn.data('offer-id')
+		// 		},
+		// 		callback: (value) => {
+		// 			d.set_value("offer_details", value.message);
+		// 			d.show();
+		// 			$btn.prop('disabled', false);
+		// 		}
+		// 	})
 
-			frappe.call({
-				method: 'webshop.webshop.doctype.website_offer.website_offer.get_offer_details',
-				args: {
-					offer_id: $btn.data('offer-id')
-				},
-				callback: (value) => {
-					d.set_value("offer_details", value.message);
-					d.show();
-					$btn.prop('disabled', false);
-				}
-			})
-
-		});
+		// });
 	});
 
 

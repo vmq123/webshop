@@ -14,7 +14,7 @@ class ItemConfigure {
 		const fields = this.attribute_data.map(a => {
 			return {
 				fieldtype: 'Select',
-				label: a.attribute,
+				label: __(a.attribute),
 				fieldname: a.attribute,
 				options: a.values.map(v => {
 					return {
@@ -38,7 +38,7 @@ class ItemConfigure {
 
 		this.attribute_data.forEach(a => {
 			const field = this.dialog.get_field(a.attribute);
-			const $a = $(`<a href>${__("Clear")}</a>`);
+			const $a = $(`<a href>${ __("Xóa")}</a>`);
 			$a.on('click', (e) => {
 				e.preventDefault();
 				this.dialog.set_value(a.attribute, '');
@@ -208,8 +208,8 @@ class ItemConfigure {
 		` : '';
 
 		const items_found = filtered_items_count === 1 ?
-			__('{0} item found.', [filtered_items_count]) :
-			__('{0} items found.', [filtered_items_count]);
+			__('Có {0} mục', [filtered_items_count]) :
+			__('Có {0} mục', [filtered_items_count]);
 
 		/* eslint-disable indent */
 		const item_found_status = exact_match.length === 1
@@ -222,7 +222,7 @@ class ItemConfigure {
 					}
 				</div></div>
 				<a href data-action="btn_clear_values" data-item-code="${one_item}">
-					${__('Clear Values')}
+					${__('Xóa')}
 				</a>
 			</div>`
 			: `<div class="alert alert-warning d-flex justify-content-between align-items-center" role="alert">
@@ -230,7 +230,7 @@ class ItemConfigure {
 						${items_found}
 					</span>
 					<a href data-action="btn_clear_values">
-						${__('Clear values')}
+						${__('Xóa')}
 					</a>
 			</div>`;
 		/* eslint-disable indent */
