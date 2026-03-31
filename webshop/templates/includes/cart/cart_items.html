@@ -39,6 +39,7 @@
 					<div class="item-subtitle mr-2">
 						{{ d.item_code }}
 					</div>
+					<!--
 					{%- set variant_of = frappe.db.get_value('Item', d.item_code, 'variant_of') %}
 					{% if variant_of %}
 					<span class="item-subtitle mr-2">
@@ -48,7 +49,7 @@
 						</a>
 					</span>
 					{% endif %}
-
+					-->
 						<div class="mt-2 notes">
 							<textarea data-item-code="{{d.item_code}}" class="form-control" rows="2" placeholder="{{ _('Add notes') }}">{{d.additional_notes or ''}}</textarea>
 						</div>
