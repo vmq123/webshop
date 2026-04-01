@@ -10,7 +10,7 @@
 		{% if cart_settings.enable_checkout or cart_settings.show_price_in_quotation %}
 			<table class="table w-100">
 				<tr>
-					{% set total_items = frappe.utils.cstr(frappe.utils.flt(doc.total_qty, 0)) %}
+					{% set total_items = frappe.utils.cstr(frappe.utils.cint(doc.total_qty)) %}
 					<td class="bill-label">{{ _("Net Total (") + total_items + _(" Items)") }}</td>
 					<td class="bill-content net-total text-right">{{ doc.get_formatted("net_total") }}</td>
 				</tr>

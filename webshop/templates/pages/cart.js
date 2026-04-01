@@ -185,11 +185,15 @@ $.extend(shopping_cart, {
 	},
 
 	place_order: function(btn) {
-		shopping_cart.freeze();
-		frappe.require(['/assets/touropt/js/webshop_place_order_3_steps.js'], () => {
-			const d = place_order_dialog(btn)
-			d.show();
-		});
+		if (frappe.get_cookie("webshop_sq_name")!=null) {
+			shopping_cart.freeze();
+			frappe.require(['/assets/touropt/js/webshop_place_order_3_steps.js'], () => {
+				const d = place_order_dialog(btn)
+				d.show();
+			});
+		} else {
+			window.location.href = '/all-products';
+		}
 	},
 
 	request_quotation: function(btn) {
