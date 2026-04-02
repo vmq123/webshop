@@ -148,7 +148,7 @@ $.extend(shopping_cart, {
 	empty_cart: function(btn) {
 		shopping_cart.freeze();
 		frappe.confirm(
-			__('Are you sure you want to empty cart?'),
+			__('Bạn chắc chắn muốn xóa giỏ hàng?'),
 			() => {
 				// Action if "Yes" is clicked
 				frappe.call({
