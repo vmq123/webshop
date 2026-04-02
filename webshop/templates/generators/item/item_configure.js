@@ -317,7 +317,7 @@ function set_continue_configuration() {
 	if (localStorage.getItem(`configure:${itemCode}`)) {
 		$btn_configure.text(__('Chọn tiếp'));
 	} else {
-		$btn_configure.text(__('Tùy chọn'));
+		$btn_configure.text(__('Cho vào giỏ hàng'));
 	}
 }
 
