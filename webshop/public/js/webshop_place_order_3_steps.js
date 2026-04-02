@@ -16,7 +16,8 @@ function place_order_dialog(e){
 			{
 				label: __('Số điện thoại'),
 				fieldname: 'phone_number',
-				fieldtype: 'Data'
+				fieldtype: 'Data',
+				reqd: 1
 			},
 			// --- STEP 2 FIELDS (Hidden initially) ---
 			{ fieldtype: 'Section Break', fieldname: 'step_2_section', label: __('Vui lòng thanh toán 50% giá trị đơn hàng để đặt cọc'), hidden: 1 },
