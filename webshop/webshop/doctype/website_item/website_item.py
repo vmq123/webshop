@@ -5,6 +5,8 @@
 import json
 from typing import TYPE_CHECKING
 
+from utilplus.generic.vms import get_attachments
+
 if TYPE_CHECKING:
     from erpnext.stock.doctype.item.item import Item
 
@@ -267,6 +269,10 @@ class WebsiteItem(WebsiteGenerator):
 		context.recommended_items = None
 		if settings and settings.enable_recommendations:
 			context.recommended_items = self.get_recommended_items(settings)
+
+		# 20260403: Add attachment
+		if settings.show_attachments:
+			context.attachments = get_attachments("Website Item", self.name)
 
 		return context
 
