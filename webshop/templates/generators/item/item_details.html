@@ -88,13 +88,13 @@
 	{% if attachments %}
 		<div class="order-item-table">
 			<div class="row order-items">
-				<div class="col-sm-12 h6">
+				<div class="col-sm-12 h6" style="color: #0000ff;">
 					{{ _("Attachments") }}
 				</div>
 				<div class="col-sm-12">
 					{% for attachment in attachments %}
 						{% if attachment.file_name.lower().endswith(".pdf") %}
-							<p class="small">
+							<p class="lead">
 								<a href="{{ attachment.file_url }}" target="blank"> {{ attachment.file_name }} </a>
 							</p>
 						{% endif  %}
