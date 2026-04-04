@@ -273,6 +273,10 @@ class WebsiteItem(WebsiteGenerator):
 		# 20260403: Add attachment
 		if settings.show_attachments:
 			context.attachments = get_attachments("Website Item", self.name)
+		# 20260404: add webpage
+		if self.custom_web_page:
+			wp_dt=frappe.get_doc("Web Page",self.custom_web_page)
+			context.custom_web_page_main_section = wp_dt.main_section
 
 		return context
 

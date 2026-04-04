@@ -19,6 +19,10 @@
 				{% include "templates/generators/item/item_image.html" %}
 				{% include "templates/generators/item/item_details.html" %}
 			</div>
+			<!-- 20260404: Add additional webpaga -->
+			{%- if custom_web_page_main_section -%}
+			{{custom_web_page_main_section}}
+			{%- endif -%}
 		</div>
 	</div>
 </div>
