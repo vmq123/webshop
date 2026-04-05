@@ -99,8 +99,9 @@ $.extend(shopping_cart, {
 				callback: function(r) {
 					shopping_cart.unfreeze();
 					shopping_cart.set_cart_count(true);
-					if(opts.callback)
+					if(opts.callback){
 						opts.callback(r);
+					}
 				}
 			});
 		} else {
@@ -108,6 +109,7 @@ $.extend(shopping_cart, {
 				window.location.href = res.message || "/login";
 			});
 		}
+		// return webshop_cart_id
 		// if (frappe.session.user==="Guest") {
 
 		// } else {

@@ -10,7 +10,7 @@ import frappe
 
 def get_context(context):
 	context.body_class = "product-page"
-	webshop_cart_id = frappe.request.cookies.get("webshop_cart_id")
+	webshop_cart_id = frappe.form_dict.get("webshop_cart_id",frappe.request.cookies.get("webshop_cart_id"))
 	# if webshop_cart_id is null then redirect to /all-products page
 	if not webshop_cart_id:
 		frappe.local.flags.redirect_location = "/all-products"

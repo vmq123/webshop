@@ -148,9 +148,15 @@ function place_order_dialog(e){
 									.html(msg || frappe._("Something went wrong!"))
 									.toggle(true);
 							} else {
+								console.log(r.message)
+								d.set_df_property('payment_instruction_html','options', `
+									<div class="alert alert-info">
+										<p>${r.message.payment_instruction}</p>
+									</div>
+								`);
 								d.set_df_property('proposed_payment_1_amount','options', `
 									<div class="alert alert-info">
-										<p>${r.message}</p>
+										<p>${r.message.payment_1}</p>
 									</div>
 								`);
 							}

@@ -255,6 +255,8 @@ class ItemConfigure {
 			qty: 1
 		});
 		this.dialog.hide();
+		// window.location.href = "/cart?webshop_cart_id="+webshop_cart_id;
+		// frappe.set_route('/cart');
 	}
 
 	btn_clear_values() {

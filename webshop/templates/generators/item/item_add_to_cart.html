@@ -118,6 +118,12 @@
 				{% if cart_settings.show_contact_us_button %}
 					{% include "templates/generators/item/item_inquiry.html" %}
 				{% endif %}
+				<a class="btn" href="/cart">
+					<svg class="icon icon-lg">
+						<use href="#icon-assets"></use>
+					</svg>
+					<span class="badge badge-primary shopping-badge" id="cart-count"></span>
+				</a>
 			</div>
 		</div>
 	</div>
