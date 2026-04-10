@@ -185,7 +185,8 @@ $.extend(shopping_cart, {
 	},
 
 	place_order: function(btn) {
-		if (frappe.get_cookie("webshop_sq_name")!=null) {
+		// if (frappe.get_cookie("webshop_sq_name")!=null) {
+		if (localStorage.getItem("webshop_cart_id")!=null) {
 			shopping_cart.freeze();
 			// const d = place_order_dialog(btn)
 			// d.show();

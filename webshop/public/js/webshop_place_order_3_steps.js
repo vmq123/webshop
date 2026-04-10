@@ -2,6 +2,7 @@ let current_step = 1;
 function place_order_dialog(e){
 	// const $btn = $(e.target);
 	// const grand_total = $btn.data('grand-total');
+	current_step = 1;
 	let d = new frappe.ui.Dialog({
 		title: __('Đặt hàng 1/4'),
 		fields: [
@@ -80,8 +81,9 @@ function place_order_dialog(e){
 					type: "POST",
 					method: "touropt.controllers.webshop_cart.place_order_for_cart_id",
 					args: {
-						webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
-						webshop_sq_name: frappe.get_cookie("webshop_sq_name"),
+						// webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
+						webshop_cart_id: localStorage.getItem("webshop_cart_id"),
+						webshop_sq_name: 'NA',
 						full_name: values.full_name,
 						phone_number: values.phone_number,
 						passenger_names: passenger_names,
@@ -113,6 +115,7 @@ function place_order_dialog(e){
 									<p>${r.message}</p>
 								</div>
 							`);
+							localStorage.removeItem('webshop_cart_id');
 							update_step(d,4); // Move to Step 4 after data is ready
 						}
 					}
@@ -129,7 +132,7 @@ function place_order_dialog(e){
 						type: "POST",
 						method: "touropt.controllers.webshop_cart.propose_payment_1_amount_for_cart_id",
 						args: {
-							webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
+							webshop_cart_id: localStorage.getItem("webshop_cart_id"),
 							full_name: values.full_name,
 							phone_number: values.phone_number
 						},

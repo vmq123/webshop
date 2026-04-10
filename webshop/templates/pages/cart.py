@@ -15,6 +15,8 @@ def get_context(context):
 	if not webshop_cart_id:
 		frappe.local.flags.redirect_location = "/all-products"
 		raise frappe.Redirect
+	else:
+		frappe.local.cookie_manager.set_cookie("webshop_cart_id", webshop_cart_id)
 	context.update(get_cart_quotation_for_cart_id(webshop_cart_id))
 	# if frappe.session.user == "Guest":
 

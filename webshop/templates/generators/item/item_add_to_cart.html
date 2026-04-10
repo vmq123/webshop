@@ -97,10 +97,12 @@
 			<div class="mb-4 d-flex">
 				<!-- Add to Cart -->
 				{% if product_info.price and (cart_settings.allow_items_not_in_stock or product_info.get("in_stock")) %}
+					<!--
 					<a href="/cart" class="btn btn-light btn-view-in-cart hidden mr-2 font-md"
 						role="button">
 						{{  _("View in Cart") if cart_settings.enable_checkout else _("View in Quote") }}
 					</a>
+					-->
 					<button
 						data-item-code="{{item_code}}"
 						class="btn btn-primary btn-add-to-cart mr-2 w-30-40"
@@ -113,11 +115,14 @@
 						{{ _("Thêm vào giỏ hàng") if cart_settings.enable_checkout else  _("Add to Quote") }}
 					</button>
 				{% endif %}
-
 				<!-- Contact Us -->
 				{% if cart_settings.show_contact_us_button %}
 					{% include "templates/generators/item/item_inquiry.html" %}
 				{% endif %}
+				<!--20260405 add this to navigate more easily-->
+				<a href="/cart" class="btn btn-view-in-cart mr-2 font-md" role="button">
+					{{  _("View in Cart") if cart_settings.enable_checkout else _("View in Quote") }}
+				</a>
 				<a class="btn" href="/cart">
 					<svg class="icon icon-lg">
 						<use href="#icon-assets"></use>
