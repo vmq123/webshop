@@ -14,7 +14,7 @@ web_include_css = "webshop-web.bundle.css"
 
 web_include_js = "web.bundle.js"
 
-after_install = "webshop.setup.install.after_install"
+after_install = "webshop.setup.after_install"
 on_logout = "webshop.webshop.shopping_cart.utils.clear_cart_count"
 on_session_creation = [
     "webshop.webshop.utils.portal.update_debtors_account",
