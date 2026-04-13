@@ -1,0 +1,32 @@
+<div class="mb-3">
+	<div class="row no-gutters">
+		<input type="text" class="txtcartname form-control mr-3 w-50 font-md" placeholder="Nhập tên đơn (không bắt buộc)" name="txtcartname" value="{{ doc.custom_cart_name or "" }}"></input>
+		<button class="btn btn-primary btn-sm bt-cart-name font-md">{{ _("Apply") }}</button>
+	</div>
+</div>
+
+<script>
+frappe.ready(() => {
+	$(".bt-cart-name").on("click", function() {
+		// frappe.msgprint("Here")
+		return frappe.call({
+			type: "POST",
+			method: "touropt.controllers.webshop_cart.update_cart_name",
+			args : {
+				webshop_cart_id:frappe.get_cookie("webshop_cart_id"),
+				cart_name : $('.txtcartname').val()
+			},
+			callback: function(r) {
+				if (r && r.message){
+					if (r.message.status == 'Success') {
+						// $(".customer-name").text(r.message.customer_dn);
+						window.location.reload();
+					} else {
+						frappe.msgprint(__("Something went wrong, please try again later"))
+					}
+				}
+			}
+		});
+	});
+});
+</script>

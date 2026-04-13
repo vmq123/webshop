@@ -18,6 +18,9 @@
 		<div class="col-md-8">
 			<div class="frappe-card p-5 mb-4">
 				<div id="cart-error" class="alert alert-danger" style="display: none;"></div>
+				{% if frappe.session.user != "Guest" and company_settings.enable_change_cart_name %}
+					{% include "templates/includes/cart/cart_change_name.html" %}
+				{% endif %}
 				<div class="cart-items-header">
 					{{ _('Items') }}
 				</div>
@@ -34,6 +37,9 @@
 					</thead>
 					<tbody class="cart-items">
 						{% include "templates/includes/cart/cart_items.html" %}
+						{% if frappe.session.user != "Guest" and company_settings.enable_change_rate_for_cart_item	%}
+							{% include "templates/includes/cart/cart_change_rate.html" %}
+						{% endif %}
 					</tbody>
 
 					{% if cart_settings.enable_checkout or cart_settings.show_price_in_quotation %}
@@ -82,10 +88,6 @@
 		<!-- Right section -->
 		<div class="col-md-4">
 			<div class="cart-payment-addresses">
-				<!--Select customer-->
-				{% if frappe.session.user != "Guest" %}
-				{% include "templates/includes/cart/cart_customer.html" %}
-				{% endif %}
 				<!-- Apply Coupon Code  -->
 				{% set show_coupon_code = cart_settings.show_apply_coupon_code_in_website and cart_settings.enable_checkout %}
 				{% if show_coupon_code == 1%}
@@ -107,6 +109,11 @@
 						{% include "templates/includes/cart/place_order.html" %}
 					</div>
 				</div>
+				<!--Select customer-->
+				{% if frappe.session.user != "Guest" and company_settings.enable_customer_input_in_cart %}
+					{% include "templates/includes/cart/cart_customer.html" %}
+					{% include "templates/includes/cart/cart_address_invoice.html" %}
+				{% endif %}
 			</div>
 		</div>
 		{% endif %}

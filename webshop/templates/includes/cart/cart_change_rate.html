@@ -1,0 +1,59 @@
+<script>
+frappe.ready(() => {
+	$(".cart-items").on("click", ".bt-change-rate", function(e) {
+		const $change_rate_item_btn = $(e.currentTarget);
+		var item_code = $change_rate_item_btn.data("item-code");
+		var uom = $change_rate_item_btn.data("uom");
+		var currency = $change_rate_item_btn.data("currency");
+		// frappe.msgprint(item_code)
+		if (!frappe.boot.sysdefaults) {
+			frappe.boot.sysdefaults = {
+				number_format: "#.###",
+				currency_precision: 0
+			};
+		}
+		const d = new frappe.ui.Dialog({
+			title: __('New rate'),
+			fields: [
+				{
+					label: __('New rate'),
+					fieldname: 'new_rate',
+					fieldtype: 'Currency',
+					options: "VND",
+					reqd: 1
+				},
+				{
+					label: __('Is only for this order'),
+					fieldname: 'is_only_for_this_order',
+					fieldtype: 'Check',
+					default: 1,
+					reqd: 1
+				},
+			],
+			primary_action_label: __('Apply'),
+			primary_action: (values) => {
+				if (values.new_rate <= 0) {
+					frappe.msgprint(__('Amount must be greater than 0'));
+					return; // Stops the dialog from closing
+				}
+				frappe.call({
+					method: "touropt.controllers.webshop_cart.change_cart_item_rate", 
+					args:{ 
+						webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
+						item_code: item_code,
+						uom:uom,
+						currency:currency,
+						new_rate: values.new_rate,
+						is_only_for_this_order: values.is_only_for_this_order,
+					},
+					callback: function (r) {
+						d.hide();
+						window.location.reload();
+					}
+					});
+			}
+		})
+		d.show();
+	});
+});
+</script>

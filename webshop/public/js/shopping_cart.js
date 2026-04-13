@@ -75,21 +75,14 @@ $.extend(shopping_cart, {
 	},
 
 	update_cart: function(opts) {
-		// let cart_count = frappe.get_cookie("cart_count");
-		// let webshop_cart_id = ""
-		// if (cart_count == null || cart_count == 0) {
-		// 	webshop_cart_id = btoa(Date.now().toString() + Math.random().toString()).substring(0, 16);
-		// 	// frappe.utils.set_cookie("webshop_cart_id", webshop_cart_id, 7);
-		// }  else {
-		// 	webshop_cart_id = frappe.get_cookie("webshop_cart_id")
-		// }
 		if (localStorage) {			
-			let cart_count = frappe.get_cookie("cart_count");
-			let webshop_cart_id = localStorage.getItem("webshop_cart_id");
-			if (webshop_cart_id == null ) {
+			let is_new_cart = localStorage.getItem("is_new_cart");
+			if (is_new_cart == null ) {
+				webshop_cart_id = frappe.get_cookie("webshop_cart_id");
+			} else {
 				webshop_cart_id = btoa(Date.now().toString() + Math.random().toString()).substring(0, 16);
-				localStorage.setItem("webshop_cart_id",webshop_cart_id);
-			}  
+				localStorage.removeItem("is_new_cart");
+			} 
 			shopping_cart.freeze();
 			return frappe.call({
 				type: "POST",

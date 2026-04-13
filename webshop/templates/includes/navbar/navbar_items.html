@@ -11,7 +11,18 @@
 		</a>
 	</li>
 	-->
-	{% if frappe.db.get_single_value("Webshop Settings", "enable_wishlist") %}
+	{% if frappe.db.get_single_value("Company Setting","enable_list_order_page") %}
+	<li class="list-orders">
+		<a class="nav-link" href="/list-orders">
+			{{ _("List orders")}}
+			<svg class="icon icon-lg">
+				<use href="#icon-heart"></use>
+			</svg>
+			<span class="badge badge-primary shopping-badge" id="list-orders-count"></span>
+		</a>
+	</li>
+	{% endif %}
+	<!-- {% if frappe.db.get_single_value("Webshop Settings", "enable_wishlist") %}
 		<li class="wishlist wishlist-icon hidden">
 			<a class="nav-link" href="/wishlist">
 				<svg class="icon icon-lg">
@@ -20,5 +31,5 @@
 				<span class="badge badge-primary shopping-badge" id="wish-count"></span>
 			</a>
 		</li>
-	{% endif %}
+	{% endif %} -->
 {% endblock %}

@@ -81,8 +81,8 @@ function place_order_dialog(e){
 					type: "POST",
 					method: "touropt.controllers.webshop_cart.place_order_for_cart_id",
 					args: {
-						// webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
-						webshop_cart_id: localStorage.getItem("webshop_cart_id"),
+						webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
+						// webshop_cart_id: localStorage.getItem("webshop_cart_id"),
 						webshop_sq_name: 'NA',
 						full_name: values.full_name,
 						phone_number: values.phone_number,
@@ -132,7 +132,7 @@ function place_order_dialog(e){
 						type: "POST",
 						method: "touropt.controllers.webshop_cart.propose_payment_1_amount_for_cart_id",
 						args: {
-							webshop_cart_id: localStorage.getItem("webshop_cart_id"),
+							webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
 							full_name: values.full_name,
 							phone_number: values.phone_number
 						},
@@ -196,101 +196,3 @@ function update_step(d,step) {
 		d.get_secondary_btn().hide();
 	}
 };
-function show_step_1(d){
-	// Show Step 1 Fields
-	d.set_df_property('full_name', 'hidden', 0);
-	d.set_df_property('phone_number', 'hidden', 0);
-
-	// 2. Hide Step 2 Fields
-	d.set_df_property('payment_instruction_html', 'hidden', 1);
-
-	// Hide Step 3 Fields
-	d.set_df_property('tour_customer_names', 'hidden', 1);
-	d.set_df_property('referal_code', 'hidden', 1);
-
-	// 4. Update Dialog UI
-	d.set_title(__('Customer Information')+" 1/3");
-	// d.set_primary_action_label('OK');
-	current_step = 1;
-	d.set_primary_action(__('Next'), function(values) {
-		show_step_2(d)
-	});
-};
-
-function show_step_2(d){
-	// Hide Step 1 Fields
-	d.set_df_property('full_name', 'hidden', 1);
-	d.set_df_property('phone_number', 'hidden', 1);
-
-	// 2. Show Step 2 Fields
-	d.set_df_property('payment_instruction_html', 'hidden', 0);
-
-	// Hide Step 3 Fields
-	d.set_df_property('tour_customer_names', 'hidden', 1);
-	d.set_df_property('referal_code', 'hidden', 1);
-
-	// 4. Update Dialog UI
-	d.set_title(__('Payment instruction')+" 2/3");
-	// current_step = 2;
-	d.set_primary_action(__('OK'), function() {
-		show_step_3(d)
-	});
-	d.add_custom_button(__('Back'), () => {
-		show_step_1(d);
-	});
-};
-function show_step_3(d){
-	// Hide Step1 Fields
-	d.set_df_property('full_name', 'hidden', 1);
-	d.set_df_property('phone_number', 'hidden', 1);
-
-	// 2. Hide Step 2 Fields
-	d.set_df_property('payment_instruction_html', 'hidden', 1);
-
-	// Show Step 3 Fields
-	d.set_df_property('tour_customer_names', 'hidden', 0);
-	d.set_df_property('referal_code', 'hidden', 0);
-
-	// 4. Update Dialog UI
-	d.set_title(__('Tour customer names')+" 3/3");
-	// current_step = 3;
-	d.set_primary_action(__('Finish'), function(values) {
-		// frappe.utils.set_cookie("cart_count", "", -1);
-		frappe.call({
-			type: "POST",
-			method: "touropt.controllers.webshop_cart.place_order_for_cart_id",
-			args: {
-				webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
-				full_name: values.full_name,
-				phone_number: values.phone_number
-			},
-			// btn: btn,
-			freeze: true,
-			callback: function(r) {
-				if(r.exc) {
-					shopping_cart.unfreeze();
-					var msg = "";
-					if(r._server_messages) {
-						msg = JSON.parse(r._server_messages || []).join("<br>");
-					}
-
-					$("#cart-error")
-						.empty()
-						.html(msg || frappe._("Something went wrong!"))
-						.toggle(true);
-				} else {
-					// $(btn).hide();
-					shopping_cart.unfreeze();
-					d.hide();
-					// window.location.href = '/orders/' + encodeURIComponent(r.message);
-					frappe.call('webshop.webshop.api.get_guest_redirect_on_action').then((res) => {
-						window.location.href = res.message || "/all-products";
-					});
-				}
-			}
-		});
-	});
-	d.add_custom_button(__('Back'), () => {
-		show_step_2(d);
-	});
-}

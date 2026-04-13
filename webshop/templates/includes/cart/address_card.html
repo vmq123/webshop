@@ -3,9 +3,12 @@
 		{{ _('Change') }}
 	</div>
 	<div class="card-body p-0">
-		<div class="card-title">{{ address.title }}</div>
+		<div class="card-title">{{ _("MST: ") + address.custom_tax_id }}</div>
 		<div class="card-text mb-2">
-			{{ address.display }}
+			{{ address.title }}
+		</div>
+		<div class="card-text mb-2">
+			{{ address.address_line1 }}
 		</div>
 		<a href="/address/{{address.name}}" class="card-link">
 			<svg class="icon icon-sm">
