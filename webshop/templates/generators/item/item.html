@@ -17,7 +17,11 @@
 			<!-- Image, Description, Add to Cart -->
 			<div class="row mb-5">
 				{% include "templates/generators/item/item_image.html" %}
-				{% include "templates/generators/item/item_details.html" %}
+				{% if doc.item_group == 'Ô tô'%}
+					{% include "templates/generators/item/item_details_car_booking.html" %}
+				{% else %}
+					{% include "templates/generators/item/item_details.html" %}
+				{% endif %}
 			</div>
 			<!-- 20260404: Add additional webpage -->
 			{%- if custom_web_page_main_section -%}

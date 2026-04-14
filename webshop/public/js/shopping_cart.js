@@ -79,6 +79,9 @@ $.extend(shopping_cart, {
 			let is_new_cart = localStorage.getItem("is_new_cart");
 			if (is_new_cart == null ) {
 				webshop_cart_id = frappe.get_cookie("webshop_cart_id");
+				if (webshop_cart_id == null) {
+					webshop_cart_id = btoa(Date.now().toString() + Math.random().toString()).substring(0, 16);
+				}
 			} else {
 				webshop_cart_id = btoa(Date.now().toString() + Math.random().toString()).substring(0, 16);
 				localStorage.removeItem("is_new_cart");
