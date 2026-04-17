@@ -196,6 +196,7 @@ $.extend(shopping_cart, {
 					$(".cart-items").html(r.message.items);
 					$(".cart-tax-items").html(r.message.total);
 					$(".payment-summary").html(r.message.taxes_and_totals);
+					$(".payment-request").html(r.message.payment_request);
 					shopping_cart.set_cart_count();
 
 					if (cart_dropdown != true) {

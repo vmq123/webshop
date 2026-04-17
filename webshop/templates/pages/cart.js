@@ -19,6 +19,7 @@ $.extend(shopping_cart, {
 		shopping_cart.bind_remove_cart_item();
 		shopping_cart.bind_change_notes();
 		shopping_cart.bind_coupon_code();
+		shopping_cart.bind_request_payment();
 	},
 
 	bind_empty_cart: function() {
@@ -188,12 +189,17 @@ $.extend(shopping_cart, {
 		// if (frappe.get_cookie("webshop_sq_name")!=null) {
 		if (frappe.get_cookie("webshop_cart_id")!=null) {
 			shopping_cart.freeze();
-			// const d = place_order_dialog(btn)
-			// d.show();
-			frappe.require(['/assets/webshop/js/webshop_place_order_3_steps.js'], () => {
-				const d = place_order_dialog(btn)
-				d.show();
-			});
+			if (frappe.session.user=='Guest') {
+				frappe.require(['/assets/webshop/js/webshop_place_order_3_steps.js'], () => {
+					const d = place_order_dialog(btn)
+					d.show();
+				});
+			} else {
+				frappe.require(['/assets/webshop/js/webshop_place_order_2_steps_zalo.js'], () => {
+					const d = place_order_2_steps_zalo_dialog(btn)
+					d.show();
+				});
+			}
 		} else {
 			window.location.href = '/all-products';
 		}
@@ -247,7 +253,20 @@ $.extend(shopping_cart, {
 				}
 			}
 		});
-	}
+	},
+	bind_request_payment: function() {
+		// $(".bt-coupon").on("click", function() {
+		// 	shopping_cart.apply_coupon_code(this);
+		// });
+		$('.btn-confirm-payment').click((e) => {
+			// const $btn = $(e.currentTarget);
+			// var amount = $btn.attr("data-amount");
+			frappe.require(['/assets/webshop/js/webshop_place_order_2_steps_zalo.js'], () => {
+				const d = place_order_case_1_dialog(e)
+				d.show();
+			});
+		});
+	},
 });
 
 frappe.ready(function() {
@@ -256,6 +275,19 @@ frappe.ready(function() {
 	}
 	shopping_cart.parent = $(".cart-container");
 	shopping_cart.bind_events();
+
+    if (!window.frappe.boot) {
+		window.frappe.boot = {
+			time_zone: "Asia/Ho_Chi_Minh"
+		}
+	}
+    if (!window.frappe.boot.sysdefaults) {
+        window.frappe.boot.sysdefaults = {
+            currency_precision: 0, // VND typically uses 0 decimals
+            number_format: "#.###",
+			time_zone: "Asia/Ho_Chi_Minh"
+        }
+    }
 });
 
 function show_terms() {

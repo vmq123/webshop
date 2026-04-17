@@ -7,7 +7,7 @@
 <!-- Billing Address -->
 <div class="checkbox ml-1 mb-2">
 	<label for="input_same_billing">
-		<input type="checkbox" class="product-filter" id="customer_request_invoice" checked style="width: 14px !important">
+		<input type="checkbox" class="product-filter" id="customer_request_invoice" unchecked style="width: 14px !important">
 		<span class="label-area font-md">{{ _('Customer request invoice') }}</span>
 	</label>
 </div>
@@ -131,6 +131,7 @@ frappe.ready(() => {
 	function toggle_billing_address_section(flag) {
 		$('[data-section="billing-address"]').toggle(flag);
 	}
+	toggle_billing_address_section(false)
 });
 </script>
 

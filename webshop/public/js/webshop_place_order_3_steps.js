@@ -83,7 +83,6 @@ function place_order_dialog(e){
 					args: {
 						webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
 						// webshop_cart_id: localStorage.getItem("webshop_cart_id"),
-						webshop_sq_name: 'NA',
 						full_name: values.full_name,
 						phone_number: values.phone_number,
 						passenger_names: passenger_names,

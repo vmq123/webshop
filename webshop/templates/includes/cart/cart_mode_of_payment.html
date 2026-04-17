@@ -1,0 +1,164 @@
+{% from "webshop/templates/includes/cart/cart_macros.html" import show_mop %}
+
+{% if mode_of_payments | length == 1%}
+	{% set select_mop = True %}
+{% endif %}
+
+<div class="mb-3 frappe-card p-5" data-section="mode_of_payment">
+	<div class="d-flex">
+		<div class="col-6 address-header"><h6>{{ _("Mode of payment") }}</h6></div>
+		<div class="col-6" style="padding: 0;">
+			<a class="ml-4 btn-new-mop" role="button">{{ _("Add a new MOP") }}</a>
+		</div>
+	</div>
+	<hr>
+	{% for mop in mode_of_payments %}
+		{% if doc.custom_mode_of_payment == mop.name %}
+		<div class="row no-gutters" data-fieldname="customer_mop">
+			<div class="w-100 mop-container" data-mop-name="{{mop.name}}" data-mop-type="billing" data-active>
+				{% include "templates/includes/cart/mode_of_payment_card.html" %}
+			</div>
+		</div>
+		{% endif %}
+	{% endfor %}
+</div>
+
+
+<script>
+frappe.ready(() => {
+	$(document).on('click', '.mop-card', (e) => {
+		const $target = $(e.currentTarget);
+		const $section = $target.closest('[data-section]');
+		$section.find('.mop-card').removeClass('active');
+		$target.addClass('active');
+	});
+
+	$('.btn-new-mop').click(() => {
+		const d = new frappe.ui.Dialog({
+			title: __('New Bank Account'),
+			fields: [
+				{
+					label: __('Bank name'),
+					fieldname: 'bank_name',
+					fieldtype: 'Data',
+					reqd: 1
+				},
+				{
+					label: __('Bank Account number'),
+					fieldname: 'bank_account_number',
+					fieldtype: 'Data',
+					reqd: 1
+				},
+				{
+					label: __('Bank Account name'),
+					fieldname: 'bank_account_name',
+					fieldtype: 'Data',
+					reqd: 1
+				},
+			],
+			primary_action_label: __('Save'),
+			primary_action: (values) => {
+				frappe.call('touropt.controllers.webshop_cart.add_new_mode_of_payment', { 
+					webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
+					doc: values 
+				})
+					.then(r => {
+						frappe.call({
+							method: "touropt.controllers.webshop_cart.update_cart_address",
+							args: {
+								webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
+								mop_type: r.message.mop_type,
+								mop_name: r.message.name
+							},
+							callback: function (r) {
+								d.hide();
+								window.location.reload();
+							}
+						});
+					});
+
+			}
+		})
+
+		d.show();
+	});
+
+	function setup_state() {
+
+		const billing_mop = $('[data-section="mode_of_payment"]')
+			.find('[data-mop-name][data-active]').attr('data-mop-name');
+
+		if (billing_mop) {
+			$(`[data-section="mode_of_payment"] [data-mop-name="${billing_mop}"] .mop-card`).addClass('active');
+		}
+	}
+
+	setup_state();
+});
+</script>
+
+<script>
+	frappe.ready(() => {
+		function get_update_mop_dialog() {
+			let d = new frappe.ui.Dialog({
+				title: __('Select Mode of Payment'),
+				fields: [{
+					'fieldtype': 'HTML',
+					'fieldname': 'mop_picker',
+				}],
+				primary_action_label: __('Apply'),
+				primary_action: () => {
+					const $card = d.$wrapper.find('.mop-card.active');
+					const mop_type = $card.closest('[data-mop-type]').attr('data-mop-type');
+					const mop_name = $card.closest('[data-mop-name]').attr('data-mop-name');
+					frappe.call({
+						type: "POST",
+						method: "touropt.controllers.webshop_cart.update_mode_of_payment",
+						freeze: true,
+						args: {
+							webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
+							mop_name:mop_name
+						},
+						callback: function(r) {
+							d.hide();
+							// d.unfreeze();
+							if (!r.exc) {
+								shopping_cart.parent.find(
+									`.mop-container[data-mop-type="${mop_type}"]`
+								).html(r.message.mop);
+							}
+						}
+					});
+				}
+			});
+
+			return d;
+		}
+
+		function get_mop_template(type) {
+			return {
+				billing: `<div class="mb-3" data-section="billing-mop">
+					<div class="row no-gutters" data-fieldname="customer_mop">
+						{% for mop in mode_of_payments %}
+							<div class="mr-3 mb-3 w-100" data-mop-name="{{mop.name}}" data-mop-type="billing"
+								{% if doc.custom_mode_of_payment == mop.name %} data-active {% endif %}>
+								{% include "templates/includes/cart/mode_of_payment_picker_card.html" %}
+							</div>
+						{% endfor %}
+					</div>
+				</div>`,
+			}[type];
+		}
+
+		$(document).on('click', '.btn-change-mop', (e) => {
+			const d = get_update_mop_dialog();
+			const type = $(e.currentTarget).parents('.mop-container').attr('data-mop-type');
+
+			$(d.get_field('mop_picker').wrapper).html(
+				get_mop_template(type)
+			);
+
+			d.show();
+		});
+	});
+</script>

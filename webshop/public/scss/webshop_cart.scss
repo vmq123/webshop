@@ -910,6 +910,51 @@ body.product-page {
 	}
 }
 
+.mop-card {
+	cursor: pointer;
+	position: relative;
+
+	.card-title {
+		font-size: 14px;
+		font-weight: 500;
+	}
+
+	.card-body {
+		max-width: 80%;
+	}
+
+	.card-text {
+		font-size: 13px;
+		color: var(--gray-700);
+	}
+
+	.card-link {
+		font-size: 13px;
+
+		svg use {
+			stroke: var(--primary-color);
+		}
+	}
+
+	.btn-change-address {
+		border: 1px solid var(--primary-color);
+		color: var(--primary-color);
+		box-shadow: none;
+	}
+
+	.check {
+		display: none;
+	}
+
+	&.active {
+		border-color: var(--primary);
+
+		.check {
+			display: inline-flex;
+		}
+	}
+}
+
 .address-header {
 	margin-top: .15rem;padding: 0;
 }
@@ -925,6 +970,14 @@ body.product-page {
 }
 
 .modal .address-card {
+	.card-body {
+		padding: var(--padding-sm);
+		border-radius: var(--border-radius);
+		border: 1px solid var(--dark-border-color);
+	}
+}
+
+.modal .mop-card {
 	.card-body {
 		padding: var(--padding-sm);
 		border-radius: var(--border-radius);
