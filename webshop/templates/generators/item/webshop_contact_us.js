@@ -80,8 +80,12 @@ frappe.ready(() => {
 	$('.btn-inquiry').click((e) => {
 		const $btn = $(e.target);
 		const item_code = $btn.data('item-code');
+		let product_title = $('.product-title').text().trim()
+		if (product_title == null) {
+			product_title = 'sản phẩm';
+		}
 		d.set_value('ref_link', item_code);
-		d.set_value('message', 'Mình quan tâm đến tour này, hãy gọi lại cho mình nhé. Cảm ơn');
+		d.set_value('message', 'Mình quan tâm đến '+product_title+' này, hãy gọi lại cho mình nhé. Cảm ơn');
 		d.get_close_btn().toggle(false); 
 		d.show();
 	});
