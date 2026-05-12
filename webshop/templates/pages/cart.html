@@ -24,30 +24,33 @@
 				<div class="cart-items-header">
 					{{ _('Items') }}
 				</div>
-				<table class="table mt-3 cart-table">
-					<thead>
-						<tr>
-							<th class="item-column">{{ _('Item') }}</th>
-							<th width="20%">{{ _('Quantity') }}</th>
-							{% if cart_settings.enable_checkout or cart_settings.show_price_in_quotation %}
-								<th width="20" class="text-right column-sm-view">{{ _('Subtotal') }}</th>
-							{% endif %}
-							<th width="10%" class="column-sm-view"></th>
-						</tr>
-					</thead>
-					<tbody class="cart-items">
+				<div class="cart-container mt-3">
+					<!-- Header Row: Hidden on mobile (d-none), visible on medium+ (d-md-flex) -->
+					<div class="row no-gutters py-2 border-bottom d-none d-md-flex font-weight-bold text-muted">
+						<div class="col-md-6">{{ _('Item') }}</div>
+						<div class="col-md-3 text-right pr-5">{{ _('Quantity') }}</div>
+						
+						{% if cart_settings.enable_checkout or cart_settings.show_price_in_quotation %}
+							<div class="col-md-3 text-right">{{ _('Subtotal') }}</div>
+						{% endif %}
+					</div>
+
+					<!-- Items Body -->
+					<div class="cart-items">
 						{% include "templates/includes/cart/cart_items.html" %}
-						{% if frappe.session.user != "Guest" and company_settings.enable_change_rate_for_cart_item	%}
+						
+						{% if frappe.session.user != "Guest" and company_settings.enable_change_rate_for_cart_item  %}
 							{% include "templates/includes/cart/cart_change_rate.html" %}
 						{% endif %}
-					</tbody>
+					</div>
 
+					<!-- Totals Section (Footer) -->
 					{% if cart_settings.enable_checkout or cart_settings.show_price_in_quotation %}
-						<tfoot class="cart-tax-items">
+						<div class="cart-tax-items mt-4">
 							{% include "templates/includes/cart/cart_items_total.html" %}
-						</tfoot>
+						</div>
 					{% endif %}
-				</table>
+				</div>
 
 				<div class="row mt-2">
 					<div class="col-3">

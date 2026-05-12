@@ -32,9 +32,9 @@ frappe.ready(() => {
 				if (r && r.message){
 					if (r.message.result == 'Found') {
 						$(".customer-name").text(r.message.customer_dn);
-						$(".customer-mobile-no").text($('.txtmobilenumber').val());
+						$(".customer-mobile-no").text(r.message.masked_mobile_number);
 						location.reload();
-					} else {
+					} else if (r.message.result == 'Not Found') {
 						const d = new frappe.ui.Dialog({
 							title: __('New Customer'),
 							fields: [
@@ -65,6 +65,43 @@ frappe.ready(() => {
 										if (r.message.result == 'Success') {
 											$(".customer-name").text(r.message.customer_dn);
 											$(".customer-mobile-no").text($('.txtmobilenumber').val());
+											d.hide();
+											window.location.reload();
+										} else {
+											frappe.msgprint(__("Something went wrong, please try again later"))
+										}
+									}
+								});
+
+							}
+						})
+						d.show();
+					} else {
+						console.log(r.message.customer_dns);
+						// case Founds = multiple result
+						const d = new frappe.ui.Dialog({
+							title: __('Select Customer'),
+							fields: [
+								{
+									label: __('Full Name'),
+									fieldname: 'fullname',
+									fieldtype: 'Select',
+									options: r.message.customer_dns,
+									reqd: 1
+								},
+							],
+							primary_action_label: __('Select'),
+							primary_action: (values) => {
+								frappe.call({
+									method: "touropt.controllers.webshop_cart.set_customer_for_webshop_cart",
+									args: {
+										webshop_cart_id:frappe.get_cookie("webshop_cart_id"),
+										customer_dn: values.fullname,
+									},
+									callback: function (r) {
+										if (r.message.result == 'Success') {
+											$(".customer-name").text(r.message.customer_dn);
+											$(".customer-mobile-no").text(r.message.masked_mobile_number);
 											d.hide();
 											window.location.reload();
 										} else {

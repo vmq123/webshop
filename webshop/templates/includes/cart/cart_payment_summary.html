@@ -12,7 +12,7 @@
 				<tr>
 					{% set total_items = frappe.utils.cstr(frappe.utils.cint(doc.total_qty)) %}
 					<td class="bill-label">{{ _("Net Total (") + total_items +" "+ _(" Items)") }}</td>
-					<td class="bill-content net-total text-right">{{ doc.get_formatted("net_total") }}</td>
+					<td class="bill-content net-total text-right">{{ custom_get_formatted(doc.net_total) }}</td>
 				</tr>
 
 				<!-- taxes -->
@@ -23,7 +23,7 @@
 								{{ d.description }}
 							</td>
 							<td class="bill-content text-right">
-								{{ d.get_formatted("base_tax_amount") }}
+								{{ custom_get_formatted(dbase_tax_amount) }}
 							</td>
 						</tr>
 					{% endif %}
@@ -47,7 +47,7 @@
 			<table class="table w-100 grand-total mt-6">
 				<tr>
 					<td class="bill-content net-total">{{ _("Grand Total") }}</td>
-					<td class="bill-content net-total text-right">{{ doc.get_formatted("grand_total") }}</td>
+					<td class="bill-content net-total text-right">{{ custom_get_formatted(doc.grand_total) }}</td>
 				</tr>
 			</table>
 		{% endif %}

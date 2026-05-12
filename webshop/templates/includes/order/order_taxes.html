@@ -5,7 +5,7 @@
 				{{ _("Net Total") }}
 			</div>
 			<div class="item-grand-total col-4 text-right pr-0">
-				{{ doc.get_formatted("net_total") }}
+				{{ custom_get_formatted(doc.net_total) }}
 			</div>
 		</div>
 	</div>
@@ -19,7 +19,7 @@
 					{{ d.description }}
 				</div>
 				<div class="item-grand-total col-4 text-right pr-0">
-					{{ d.get_formatted("base_tax_amount") }}
+					{{ custom_get_formatted(d.base_tax_amount) }}
 				</div>
 			</div>
 		</div>
@@ -105,7 +105,7 @@
 			{{ _("Grand Total") }}
 		</div>
 		<div class="item-grand-total col-4 text-right pr-0">
-			{{ doc.get_formatted("grand_total") }}
+			{{ custom_get_formatted(doc.grand_total) }}
 		</div>
 	</div>
 </div>

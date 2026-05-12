@@ -7,17 +7,17 @@
 			<table class="table w-100">
 				<tr>
 					<td class="bill-content net-total">{{ _("Grand Total") }}</td>
-					<td class="bill-content net-total text-right">{{ doc.get_formatted("grand_total") }}</td>
+					<td class="bill-content net-total text-right">{{ custom_get_formatted(doc.grand_total) }}</td>
 				</tr>
 				<tr>
 					<td class="bill-label">{{ _("Already paid") }}</td>
 					<!-- <td class="bill-content net-total text-right">{{ doc.get_formatted("custom_amount_already_paid") }}</td> -->
-					<td class="bill-content net-total text-right">{{ frappe.utils.fmt_money(payment_request.custom_amount_already_paid, currency=payment_request.currency) }}</td>
+					<td class="bill-content net-total text-right">{{ custom_get_formatted(payment_request.custom_amount_already_paid) }}</td>
 					
 				</tr>
 				<tr>
 					<td class="bill-label">{{ _("Remaining amount") }}</td>
-					<td class="bill-content net-total text-right">{{ frappe.utils.fmt_money(payment_request.custom_remaining_payment_amount, currency=payment_request.currency) }}</td>
+					<td class="bill-content net-total text-right">{{ custom_get_formatted(payment_request.custom_remaining_payment_amount) }}</td>
 				</tr>
 			</table>
 			<input type="hidden" class="txtcustom_remaining_payment_amount" name="txtcustom_remaining_payment_amount" value="{{ frappe.utils.cint(payment_request.custom_remaining_payment_amount) }}"></input>
