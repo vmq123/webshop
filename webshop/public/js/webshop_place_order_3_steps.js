@@ -52,7 +52,7 @@ function place_order_dialog(e){
 			// --- STEP 3 FIELDS (Hidden initially) ---
 			{ fieldtype: 'Section Break', fieldname: 'step_3_section', label: __(''), hidden: 1 },
 			{
-				label: __('Tên các hành khách'),
+				label: __('Ghi chú - nếu có'),
 				fieldname: 'passenger_names',
 				fieldtype: 'Small Text'
 				// reqd: 1,

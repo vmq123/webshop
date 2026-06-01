@@ -23,8 +23,7 @@ function place_order_case_1_dialog(e){
 				fieldname: 'amount_received',
 				fieldtype: 'Currency',
 				options: 'VND',
-				default: amount,
-				reqd: 1
+				default: amount
 			},
 			{
 				label: __(''),
@@ -75,6 +74,23 @@ function place_order_case_1_dialog(e){
 		primary_action: (values) => {
 			console.log("current_step:", current_step);
 			console.log("values:", values);
+			let raw_input_string = d.fields_dict.amount_received.$input.val();
+
+			// 2. Custom Validation: Check if the box is genuinely blank
+			if (!raw_input_string || raw_input_string.trim() === '') {
+				frappe.msgprint({
+					title: __('Validation Error'),
+					indicator: 'red',
+					message: __('The Amount field is mandatory..')
+				});
+				// Stop execution so the dialog stays open
+				return; 
+			}
+
+			// 3. Re-inject the parsed number (0) back into the values object 
+			// We use d.get_value() so Frappe handles any currency formatting properly
+			values.amount = d.get_value('amount_received');
+
 			if (current_step == 4) {
             	shopping_cart.unfreeze();
 				d.hide();
@@ -141,6 +157,7 @@ function update_step(d,step,values) {
 	}
 };
 function confirm_place_order(d, values) {
+	console.log('values to submit: '+ values )
 	frappe.call({
 		type: "POST",
 		method: "touropt.controllers.webshop_cart.confirm_place_order_for_cart_id",
