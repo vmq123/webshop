@@ -1,0 +1,48 @@
+{% from "webshop/templates/includes/cart/cart_macros.html" import show_address %}
+
+<div class="mb-3 frappe-card p-5">
+	<div class="d-flex">
+		<div class="col-6 address-header"><h6>{{ _("Lead") }}</h6></div>
+	</div>
+	<div class="row no-gutters">
+		<div class="w-100 address-container" data-lead-name="{{lead.name}}" data-active>
+			<div class="card address-card h-100">
+				<div class="card-body p-0">
+					<div class="card-title lead-name">{{ lead.first_name }}</div>
+					<div class="card-text lead-mobile-no mb-2">
+						{{ lead.masked_mobile_number }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="mb-3">
+		<div class="row no-gutters">
+			<button class="btn btn-primary btn-sm bt-convert-to-customer font-md" data-lead-name="{{lead.name}}">{{ _("Convert to customer") }}</button>
+		</div>
+	</div>
+
+</div>
+
+<script>
+frappe.ready(() => {
+	$(".bt-convert-to-customer").on("click", function(e) {
+		const $btn = $(e.currentTarget);
+		var lead_dn = $btn.data("lead-name");
+		console.log('bt-convert-to-customer: '+lead_dn)
+		return frappe.call({
+			type: "POST",
+			method: "touropt.controllers.webshop_cart.convert_lead_to_customer",
+			args : {
+				webshop_cart_id:frappe.get_cookie("webshop_cart_id"),
+				lead_dn : lead_dn
+			},
+			callback: function(r) {
+				if (r && r.message){
+					location.reload();
+				}
+			}
+		});
+	});
+});
+</script>

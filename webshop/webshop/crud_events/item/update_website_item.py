@@ -17,6 +17,9 @@ def execute(doc, method=None):
         ]
         doc_before_save = doc.get_doc_before_save()
 
+        if not doc_before_save:
+            return
+        
         for field in editable_fields:
             if doc_before_save.get(field) != doc.get(field):
                 if field == "disabled":

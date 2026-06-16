@@ -4,15 +4,15 @@
 	<div class="d-flex">
 		<div class="col-6 address-header"><h6>{{ _("Customer") }}</h6></div>
 	</div>
-	<div class="mb-3">
-		<div class="row no-gutters">
-			<input type="text" class="txtmobilenumber form-control mr-3 w-50 font-md" placeholder="Nhập số điện thoại" name="txtmobilenumber"  ></input>
-			<button class="btn btn-primary btn-sm bt-search-customer font-md">{{ _("Search customer") }}</button>
-		</div>
-	</div>
 	<div class="row no-gutters" data-fieldname="shipping_address_name">
 		<div class="w-100 address-container" data-customer-name="{{customer.name}}" data-address-type="shipping" data-active>
 			{% include "templates/includes/cart/customer_card.html" %}
+		</div>
+	</div>
+	<div class="mb-3">
+		<div class="row no-gutters">
+			<input type="text" class="txtmobilenumber form-control mr-3 w-50 font-md" placeholder="Nhập số điện thoại" name="txtmobilenumber"  ></input>
+			<button class="btn btn-primary btn-sm bt-search-customer font-md">{{ _("Change customer") }}</button>
 		</div>
 	</div>
 </div>

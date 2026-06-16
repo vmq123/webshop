@@ -1,5 +1,11 @@
 frappe.ui.form.on("Item", {
     refresh: function(frm) {
+		frm.trigger('refresh_button')
+	},
+	onload_post_render: function(frm) {
+		frm.trigger('refresh_button')
+	},
+	refresh_button: function(frm){
 		if (!frm.doc.__islocal) {
 			if (!frm.doc.published_in_website) {
 				frm.add_custom_button(__("Publish in Website"), function() {
@@ -35,3 +41,4 @@ frappe.ui.form.on("Item", {
 		}
 	}
 });
+
