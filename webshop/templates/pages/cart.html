@@ -117,7 +117,7 @@
 				{% if frappe.session.user != "Guest" and company_settings.enable_customer_input_in_cart %}
 					{% if quotation_to == "Customer" %}
 						{% include "templates/includes/cart/cart_customer.html" %}
-						{% include "templates/includes/cart/cart_address_invoice.html" %}
+						{% include "templates/includes/cart/cart_address_ghn.html" %}
 						{% include "templates/includes/cart/cart_mode_of_payment.html" %}
 						<div class="mb-3 frappe-card p-5">
 							<div class="payment-request">
