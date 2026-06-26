@@ -1,0 +1,49 @@
+<div class="cart-empty frappe-card">
+	<div class="cart-empty-state">
+		<img src="/assets/webshop/images/cart-empty-state.png" alt="Empty State">
+	</div>
+	<div class="cart-empty-message mt-4">
+		<p>{{ _('Đơn hàng đã được duyệt, không thay đổi được nữa') }}</p>
+	</div>
+	<div class="new-card">
+		<button data-item-code="" class="btn btn-primary btn-create-new-cart mr-2 w-30-40">
+			<span class="mr-2">
+				<svg class="icon icon-md">
+					<use href="#icon-assets"></use>
+				</svg>
+			</span>
+			{{ _("Thêm giỏ hàng mới") }}
+		</button>
+	</div>
+</div>
+
+<script>
+	frappe.ready(() => {
+		$('.page_content').on('click', '.btn-create-new-cart', (e) => {
+			if (localStorage) {		
+				localStorage.setItem("is_new_cart", 1);
+				frappe.call({
+					type: "POST",
+					method: "touropt.controllers.webshop_cart.add_new_cart",
+					callback: function(r) {
+						frappe.msgprint({
+							title: __('Đã tạo giỏ hàng mới'),
+							message: __('Bấm OK để bắt đầu cho hàng vào giỏ ở trang tiếp theo'),
+							indicator: 'blue',
+							primary_action: {
+								label: 'OK',
+								action: () => {
+									window.location.href = "/all-products";
+								}
+							}
+						});
+					}
+				});
+			} else {
+				frappe.call('webshop.webshop.api.get_guest_redirect_on_action').then((res) => {
+					window.location.href = res.message || "/login";
+				});
+			}
+		});
+	});
+</script>

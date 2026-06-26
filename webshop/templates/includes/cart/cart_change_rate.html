@@ -13,27 +13,27 @@ frappe.ready(() => {
 			};
 		}
 		const d = new frappe.ui.Dialog({
-			title: __('New rate'),
+			title: __('Đơn giá mới'),
 			fields: [
 				{
-					label: __('New rate'),
+					label: __('Đơn giá mới'),
 					fieldname: 'new_rate',
 					fieldtype: 'Currency',
 					options: "VND",
 					reqd: 1
 				},
 				{
-					label: __('Is only for this order'),
+					label: __('Chỉ áp dụng cho giỏ hàng này'),
 					fieldname: 'is_only_for_this_order',
 					fieldtype: 'Check',
 					default: 1,
 					reqd: 1
 				},
 			],
-			primary_action_label: __('Apply'),
+			primary_action_label: __('OK'),
 			primary_action: (values) => {
 				if (values.new_rate <= 0) {
-					frappe.msgprint(__('Amount must be greater than 0'));
+					frappe.msgprint(__('Đơn giá phải lớn hơn 0'));
 					return; // Stops the dialog from closing
 				}
 				frappe.call({
