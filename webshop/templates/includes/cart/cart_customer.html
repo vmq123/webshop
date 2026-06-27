@@ -1,11 +1,11 @@
 {% from "webshop/templates/includes/cart/cart_macros.html" import show_address %}
 
-<div class="mb-3 frappe-card p-5" data-section="shipping-address">
+<div class="mb-3 frappe-card p-5">
 	<div class="d-flex">
 		<div class="col-6 address-header"><h6>{{ _("Customer") }}</h6></div>
 	</div>
-	<div class="row no-gutters" data-fieldname="shipping_address_name">
-		<div class="w-100 address-container" data-customer-name="{{customer.name}}" data-address-type="shipping" data-active>
+	<div class="row no-gutters">
+		<div class="w-100 address-container" data-customer-name="{{customer.name}}" data-active>
 			{% include "templates/includes/cart/customer_card.html" %}
 		</div>
 	</div>

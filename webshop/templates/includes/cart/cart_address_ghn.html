@@ -72,17 +72,30 @@ frappe.ready(() => {
 		const d = new frappe.ui.Dialog({
 			title: __('New Address'),
 			fields: [
-				// {
-				// 	label: __('Address Title'),
-				// 	fieldname: 'address_title',
-				// 	fieldtype: 'Data',
-				// 	reqd: 1
-				// },
-				// {
-				// 	label: __('State'),
-				// 	fieldname: 'state',
-				// 	fieldtype: 'Data'
-				// },
+				{
+					label: __('Address Type'),
+					fieldname: 'address_type',
+					fieldtype: 'Select',
+					options: [
+						'Billing',
+						'Shipping'
+					],
+					reqd: 1
+				},
+				{
+					label: __('Tax ID'),
+					fieldname: 'custom_tax_id',
+					fieldtype: 'Data',
+					depends_on: 'eval:doc.address_type == "Billing"',
+        			mandatory_depends_on: 'eval:doc.address_type == "Billing"'
+				},
+				{
+					label: __('Company name'),
+					fieldname: 'custom_company_name',
+					fieldtype: 'Data',
+					depends_on: 'eval:doc.address_type == "Billing"',
+        			mandatory_depends_on: 'eval:doc.address_type == "Billing"'
+				},
 				{
 					label: __('Country'),
 					fieldname: 'country',
@@ -91,6 +104,11 @@ frappe.ready(() => {
 					default: 'Vietnam',
 					only_select: true,
 					reqd: 1
+				},
+				{
+					fieldname: "column_break0",
+					fieldtype: "Column Break",
+					width: "50%"
 				},
 				{
 					label: __('City'),
@@ -114,51 +132,11 @@ frappe.ready(() => {
 					fieldtype: 'Data',
 					reqd: 1
 				},
-				{
-					label: __('Address Line 2'),
-					fieldname: 'address_line2',
-					fieldtype: 'Data'
-				},
-				{
-					fieldname: "column_break0",
-					fieldtype: "Column Break",
-					width: "50%"
-				},
-				{
-					label: __('Address Type'),
-					fieldname: 'address_type',
-					fieldtype: 'Select',
-					options: [
-						'Billing',
-						'Shipping'
-					],
-					reqd: 1
-				},
-				{
-					label: __('Tax ID'),
-					fieldname: 'custom_tax_id',
-					fieldtype: 'Data',
-					// options: 'VN City',
-					// only_select: true,
-					// reqd: 1
-				}
 				// {
-				// 	label: __('City/Town'),
-				// 	fieldname: 'city',
-				// 	fieldtype: 'Data',
-				// 	reqd: 1
-				// },
-				// {
-				// 	label: __('Postal Code'),
-				// 	fieldname: 'pincode',
+				// 	label: __('Address Line 2'),
+				// 	fieldname: 'address_line2',
 				// 	fieldtype: 'Data'
-				// },
-				// {
-				// 	fieldname: "phone",
-				// 	fieldtype: "Data",
-				// 	label: "Phone",
-				// 	reqd: 1
-				// },
+				// }
 			],
 			primary_action_label: __('Save'),
 			primary_action: (values) => {
