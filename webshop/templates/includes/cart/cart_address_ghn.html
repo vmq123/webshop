@@ -69,7 +69,7 @@ frappe.ready(() => {
 	});
 
 	$('.btn-new-address').click(() => {
-		const d = new frappe.ui.Dialog({
+		const dialog = new frappe.ui.Dialog({
 			title: __('New Address'),
 			fields: [
 				{
@@ -111,19 +111,29 @@ frappe.ready(() => {
 					width: "50%"
 				},
 				{
-					label: __('City'),
+					label: 'City',
 					fieldname: 'custom_vn_city',
-					fieldtype: 'Link',
-					options: 'VN City',
-					only_select: true,
-					reqd: 1
+					fieldtype: 'Select',
+					options: [{ label: 'Loading Cities...', value: '' }],
+					reqd: 1,
+					// 2. Listen for the user picking a city
+					onchange: function() {
+						let selected_city = dialog.get_value('custom_vn_city');
+						
+						if (!selected_city) {
+							dialog.set_df_property('custom_vn_ward', 'options', []);
+							return;
+						}
+						
+						// Fetch the wards for this specific city
+						fetch_wards(selected_city);
+					}
 				},
 				{
-					label: __('Ward'),
+					label: 'Ward',
 					fieldname: 'custom_vn_ward',
-					fieldtype: 'Link',
-					options: 'VN Ward',
-					only_select: true,
+					fieldtype: 'Select',
+					options: [{ label: 'Select a City first...', value: '' }],
 					reqd: 1
 				},
 				{
@@ -131,12 +141,7 @@ frappe.ready(() => {
 					fieldname: 'address_line1',
 					fieldtype: 'Data',
 					reqd: 1
-				},
-				// {
-				// 	label: __('Address Line 2'),
-				// 	fieldname: 'address_line2',
-				// 	fieldtype: 'Data'
-				// }
+				}
 			],
 			primary_action_label: __('Save'),
 			primary_action: (values) => {
@@ -152,15 +157,71 @@ frappe.ready(() => {
 								address_name: r.message.name
 							},
 							callback: function (r) {
-								d.hide();
+								dialog.hide();
 								window.location.reload();
 							}
 						});
 					});
 			}
-		})
+		});
 
-		d.show();
+		dialog.show();
+		fetch_cities();
+
+		function fetch_cities() {
+			frappe.call({
+				method: 'frappe.client.get_list',
+				args: {
+					doctype: 'VN City', // Update to match your exact DocType name
+					fields: ['name', 'city_name'], 
+					limit_page_length: 0 // Fetch all
+				},
+				callback: function(r) {
+					let city_options = [{ label: '--- Select a City ---', value: '' }];
+					
+					if (r.message) {
+						// Map the database rows to label/value objects
+						r.message.forEach(city => {
+							city_options.push({
+								label: city.city_name,
+								value: city.name 
+							});
+						});
+					}
+					// Update the dialog's City dropdown
+					dialog.set_df_property('custom_vn_city', 'options', city_options);
+				}
+			});
+		}
+
+		function fetch_wards(city_code) {
+			// Show a loading state in the Ward field
+			dialog.set_df_property('custom_vn_ward', 'options', [{ label: 'Loading Wards...', value: '' }]);
+
+			frappe.call({
+				method: 'frappe.client.get_list',
+				args: {
+					doctype: 'VN Ward', // Update to match your exact DocType name
+					filters: { 'in_city': city_code }, // Ensure 'city' matches the column in your DB
+					fields: ['name', 'ward_name'],
+					limit_page_length: 0
+				},
+				callback: function(r) {
+					let ward_options = [{ label: '--- Select a Ward ---', value: '' }];
+					
+					if (r.message) {
+						r.message.forEach(ward => {
+							ward_options.push({
+								label: ward.ward_name,
+								value: ward.name
+							});
+						});
+					}
+					// Update the dialog's Ward dropdown
+					dialog.set_df_property('custom_vn_ward', 'options', ward_options);
+				}
+			});
+		}
 	});
 
 	function setup_state() {
