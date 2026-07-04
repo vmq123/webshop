@@ -30,55 +30,6 @@ frappe.ready(() => {
 		$target.addClass('active');
 	});
 
-	$('.btn-new-mop').click(() => {
-		const d = new frappe.ui.Dialog({
-			title: __('New Bank Account'),
-			fields: [
-				{
-					label: __('Bank name'),
-					fieldname: 'bank_name',
-					fieldtype: 'Data',
-					reqd: 1
-				},
-				{
-					label: __('Bank Account number'),
-					fieldname: 'bank_account_number',
-					fieldtype: 'Data',
-					reqd: 1
-				},
-				{
-					label: __('Bank Account name'),
-					fieldname: 'bank_account_name',
-					fieldtype: 'Data',
-					reqd: 1
-				},
-			],
-			primary_action_label: __('Save'),
-			primary_action: (values) => {
-				frappe.call('touropt.controllers.webshop_cart.add_new_mode_of_payment', { 
-					webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
-					doc: values 
-				})
-					.then(r => {
-						frappe.call({
-							method: "touropt.controllers.webshop_cart.update_mode_of_payment",
-							args: {
-								webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
-								mop_name: r.message.name
-							},
-							callback: function (r) {
-								d.hide();
-								window.location.reload();
-							}
-						});
-					});
-
-			}
-		})
-
-		d.show();
-	});
-
 	function setup_state() {
 
 		const billing_mop = $('[data-section="mode_of_payment"]')
