@@ -36,19 +36,27 @@ frappe.ready(() => {
 						location.reload();
 					} else if (r.message.result == 'Not Found') {
 						const d = new frappe.ui.Dialog({
-							title: __('New Customer'),
+							title: __('Khách hàng mới'),
 							fields: [
 								{
-									label: __('Full Name'),
+									label: __('Tên đầy đủ'),
 									fieldname: 'fullname',
 									fieldtype: 'Data',
 									reqd: 1
 								},
 								{
-									label: __('Mobile number'),
+									label: __('Số điện thoại'),
 									fieldname: 'mobile_number',
 									fieldtype: 'Data',
 									default: $('.txtmobilenumber').val(),
+									reqd: 1
+								},
+								{
+									label: __('Loại'),
+									fieldname: 'customer_type',
+									fieldtype: 'Select',
+									options: 'Individual\nCompany',
+									default: 'Individual',
 									reqd: 1
 								},
 							],
@@ -59,7 +67,8 @@ frappe.ready(() => {
 									args: {
 										webshop_cart_id:frappe.get_cookie("webshop_cart_id"),
 										fullname: values.fullname,
-										mobile_number: values.mobile_number
+										mobile_number: values.mobile_number,
+										customer_type: values.customer_type
 									},
 									callback: function (r) {
 										if (r.message.result == 'Success') {
@@ -80,17 +89,17 @@ frappe.ready(() => {
 						console.log(r.message.customer_dns);
 						// case Founds = multiple result
 						const d = new frappe.ui.Dialog({
-							title: __('Select Customer'),
+							title: __('Chọn khách hàng'),
 							fields: [
 								{
-									label: __('Full Name'),
+									label: __('Tên đầy đủ'),
 									fieldname: 'fullname',
 									fieldtype: 'Select',
 									options: r.message.customer_dns,
 									reqd: 1
 								},
 							],
-							primary_action_label: __('Select'),
+							primary_action_label: __('Chọn'),
 							primary_action: (values) => {
 								frappe.call({
 									method: "touropt.controllers.webshop_cart.set_customer_for_webshop_cart",
