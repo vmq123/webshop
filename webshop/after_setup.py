@@ -8,7 +8,7 @@ from frappe.desk.page.setup_wizard.install_fixtures import (
 )
 from frappe.desk.page.setup_wizard.setup_wizard import make_records
 from frappe.installer import update_site_config
-from frappe.config import get_modules_from_all_apps
+# from frappe.config import get_modules_from_all_apps
 
 def after_install():
 	try:
@@ -28,7 +28,7 @@ def after_install():
 		raise e
 
 def execute_after_install():
-	create_custom_fields_all()
+	# create_custom_fields_all()
 	# create_salary_slip_loan_fields()
 	# make_fixtures()
 	# setup_notifications()
@@ -38,6 +38,7 @@ def execute_after_install():
 	# create_default_role_profiles()
 	# create_default_module_profiles()
 	# run_post_install_patches()
+	pass
 
 def create_custom_fields_all():
 	create_custom_fields(get_custom_fields(), ignore_validate=True)
@@ -337,19 +338,19 @@ def create_default_role_profiles():
 
 		role_profile.insert(ignore_permissions=True)
 
-def create_default_module_profiles():
-	for module_profile_name, modules in DEFAULT_MODULE_PROFILES.items():
-		if frappe.db.exists("Module Profile", module_profile_name):
-			continue
+# def create_default_module_profiles():
+# 	for module_profile_name, modules in DEFAULT_MODULE_PROFILES.items():
+# 		if frappe.db.exists("Module Profile", module_profile_name):
+# 			continue
 
-		module_profile = frappe.new_doc("Module Profile")
-		module_profile.module_profile_name = module_profile_name
-		for m in get_modules_from_all_apps():
-			mod_name = m.get("module_name")
-			if (mod_name not in modules):
-				module_profile.append("block_modules", {"module": mod_name})
+# 		module_profile = frappe.new_doc("Module Profile")
+# 		module_profile.module_profile_name = module_profile_name
+# 		for m in get_modules_from_all_apps():
+# 			mod_name = m.get("module_name")
+# 			if (mod_name not in modules):
+# 				module_profile.append("block_modules", {"module": mod_name})
 
-		module_profile.insert(ignore_permissions=True)
+# 		module_profile.insert(ignore_permissions=True)
 
 def get_post_install_patches():
 	return (
