@@ -154,7 +154,7 @@ $.extend(shopping_cart, {
 				// Action if "Yes" is clicked
 				frappe.call({
 					type: "POST",
-					method: "touropt.controllers.webshop_cart.empty_cart_for_cart_id",
+					method: "salesaz.controllers.webshop_cart.empty_cart_for_cart_id",
 					args: {
 						webshop_cart_id: frappe.get_cookie("webshop_cart_id")
 					},

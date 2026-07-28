@@ -3,7 +3,7 @@
 
 no_cache = 1
 
-from touropt.controllers.webshop_cart import get_cart_quotation_for_cart_id
+from salesaz.controllers.webshop_cart import get_cart_quotation_for_cart_id
 from webshop.webshop.shopping_cart.cart import get_cart_quotation
 
 import frappe

@@ -24,7 +24,7 @@
 				localStorage.setItem("is_new_cart", 1);
 				frappe.call({
 					type: "POST",
-					method: "touropt.controllers.webshop_cart.add_new_cart",
+					method: "salesaz.controllers.webshop_cart.add_new_cart",
 					callback: function(r) {
 						frappe.msgprint({
 							title: __('Đã tạo giỏ hàng mới'),

@@ -11,7 +11,7 @@ frappe.ready(() => {
 		// frappe.msgprint("Here")
 		return frappe.call({
 			type: "POST",
-			method: "touropt.controllers.webshop_cart.update_cart_name",
+			method: "salesaz.controllers.webshop_cart.update_cart_name",
 			args : {
 				webshop_cart_id:frappe.get_cookie("webshop_cart_id"),
 				cart_name : $('.txtcartname').val()

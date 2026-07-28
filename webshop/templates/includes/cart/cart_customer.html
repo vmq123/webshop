@@ -23,7 +23,7 @@ frappe.ready(() => {
 		// frappe.msgprint("Here")
 		return frappe.call({
 			type: "POST",
-			method: "touropt.controllers.webshop_cart.search_and_update_customer_for_webshop_cart",
+			method: "salesaz.controllers.webshop_cart.search_and_update_customer_for_webshop_cart",
 			args : {
 				webshop_cart_id:frappe.get_cookie("webshop_cart_id"),
 				phone_number : $('.txtmobilenumber').val()
@@ -63,7 +63,7 @@ frappe.ready(() => {
 							primary_action_label: __('Save'),
 							primary_action: (values) => {
 								frappe.call({
-									method: "touropt.controllers.webshop_cart.save_and_update_customer_for_webshop_cart",
+									method: "salesaz.controllers.webshop_cart.save_and_update_customer_for_webshop_cart",
 									args: {
 										webshop_cart_id:frappe.get_cookie("webshop_cart_id"),
 										fullname: values.fullname,
@@ -102,7 +102,7 @@ frappe.ready(() => {
 							primary_action_label: __('Chọn'),
 							primary_action: (values) => {
 								frappe.call({
-									method: "touropt.controllers.webshop_cart.set_customer_for_webshop_cart",
+									method: "salesaz.controllers.webshop_cart.set_customer_for_webshop_cart",
 									args: {
 										webshop_cart_id:frappe.get_cookie("webshop_cart_id"),
 										customer_dn: values.fullname,

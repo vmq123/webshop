@@ -37,7 +37,7 @@ frappe.ready(() => {
 					return; // Stops the dialog from closing
 				}
 				frappe.call({
-					method: "touropt.controllers.webshop_cart.change_cart_item_rate", 
+					method: "salesaz.controllers.webshop_cart.change_cart_item_rate", 
 					args:{ 
 						webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
 						item_code: item_code,

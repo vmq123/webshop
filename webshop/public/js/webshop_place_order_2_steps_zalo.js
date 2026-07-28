@@ -160,7 +160,7 @@ function confirm_place_order(d, values) {
 	console.log('values to submit: '+ values )
 	frappe.call({
 		type: "POST",
-		method: "touropt.controllers.webshop_cart.confirm_place_order_for_cart_id",
+		method: "salesaz.controllers.webshop_cart.confirm_place_order_for_cart_id",
 		args: {
 			webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
 			case: 1,

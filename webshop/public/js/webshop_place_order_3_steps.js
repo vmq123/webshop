@@ -79,7 +79,7 @@ function place_order_dialog(e){
 			if (current_step == 3){
 				frappe.call({
 					type: "POST",
-					method: "touropt.controllers.webshop_cart.place_order_for_cart_id",
+					method: "salesaz.controllers.webshop_cart.place_order_for_cart_id",
 					args: {
 						webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
 						// webshop_cart_id: localStorage.getItem("webshop_cart_id"),
@@ -129,7 +129,7 @@ function place_order_dialog(e){
 				if (current_step == 1) {
 					frappe.call({
 						type: "POST",
-						method: "touropt.controllers.webshop_cart.propose_payment_1_amount_for_cart_id",
+						method: "salesaz.controllers.webshop_cart.propose_payment_1_amount_for_cart_id",
 						args: {
 							webshop_cart_id: frappe.get_cookie("webshop_cart_id"),
 							full_name: values.full_name,

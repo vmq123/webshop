@@ -32,7 +32,7 @@ frappe.ready(() => {
 		console.log('bt-convert-to-customer: '+lead_dn)
 		return frappe.call({
 			type: "POST",
-			method: "touropt.controllers.webshop_cart.convert_lead_to_customer",
+			method: "salesaz.controllers.webshop_cart.convert_lead_to_customer",
 			args : {
 				webshop_cart_id:frappe.get_cookie("webshop_cart_id"),
 				lead_dn : lead_dn

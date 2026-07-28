@@ -89,7 +89,7 @@ $.extend(shopping_cart, {
 			shopping_cart.freeze();
 			return frappe.call({
 				type: "POST",
-				method: "touropt.controllers.webshop_cart.update_cart_for_cart_id",
+				method: "salesaz.controllers.webshop_cart.update_cart_for_cart_id",
 				args: {
 					webshop_cart_id: webshop_cart_id,
 					item_code: opts.item_code,
