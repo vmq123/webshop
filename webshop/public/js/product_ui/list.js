@@ -24,9 +24,22 @@ webshop.ProductList = class {
 			let title = item.web_item_name || item.item_name || item.item_code || "";
 			title =  title.length > 200 ? title.substr(0, 200) + "..." : title;
 
+			// html += `<div class='row list-row w-100 mb-4'>`;
+			// html += me.get_image_html(item, title, me.settings);
+			// html += me.get_row_body_html(item, title, me.settings);
+			// html += `</div>`;
+
 			html += `<div class='row list-row w-100 mb-4'>`;
-			html += me.get_image_html(item, title, me.settings);
-			html += me.get_row_body_html(item, title, me.settings);
+			// Bọc phần hình ảnh: chiếm 100% (mobile) và 3/12 hoặc 4/12 cột (desktop)
+			// mb-3 mb-md-0 tạo khoảng cách phía dưới hình ảnh khi ở mobile, và bỏ khoảng cách này đi trên desktop
+			// html += `   <div class="col-12 col-md-3 mb-3 mb-md-0">`; 
+			html +=         me.get_image_html(item, title, me.settings);
+			// html += `   </div>`;
+
+			// Bọc phần nội dung: chiếm 100% (mobile) và 9/12 cột (desktop)
+			// html += `   <div class="col-12 col-md-9">`;
+			html +=         me.get_row_body_html(item, title, me.settings);
+			// html += `   </div>`;
 			html += `</div>`;
 		});
 
@@ -41,7 +54,7 @@ webshop.ProductList = class {
 
 		if (image) {
 			image_html += `
-				<div class="col-2 border text-center rounded list-image">
+				<div class="col-12 col-md-3 mb-3 mb-md-0 border text-center rounded list-image">
 					<a class="product-link product-list-link" href="/${ item.route || '#' }">
 						<img itemprop="image" class="website-image h-100 w-100" alt="${ title }"
 							src="${ image }">
@@ -67,9 +80,14 @@ webshop.ProductList = class {
 	}
 
 	get_row_body_html(item, title, settings) {
-		let body_html = `<div class='col-10 text-left'>`;
+		let body_html = `<div class='col-12 col-md-9 text-left'>`;
 		body_html += this.get_title_html(item, title, settings);
 		body_html += this.get_item_details(item, settings);
+		if (settings.enabled) {
+			body_html += `<div class="col-12 col-md-4 cart-action-container ${item.in_cart ? 'd-flex' : ''}">`;
+			body_html += this.get_primary_button(item, settings);
+			body_html += `</div>`;
+		}
 		body_html += `</div>`;
 		return body_html;
 	}
@@ -85,11 +103,11 @@ webshop.ProductList = class {
 			</div>
 		`;
 
-		if (settings.enabled) {
-			title_html += `<div class="col-4 cart-action-container ${item.in_cart ? 'd-flex' : ''}">`;
-			title_html += this.get_primary_button(item, settings);
-			title_html += `</div>`;
-		}
+		// if (settings.enabled) {
+		// 	title_html += `<div class="col-4 cart-action-container ${item.in_cart ? 'd-flex' : ''}">`;
+		// 	title_html += this.get_primary_button(item, settings);
+		// 	title_html += `</div>`;
+		// }
 		title_html += `</div>`;
 
 		return title_html;
@@ -174,11 +192,10 @@ webshop.ProductList = class {
 		} else if (settings.enabled && (settings.allow_items_not_in_stock || item.in_stock)) {
 			return `
 				<div id="${ item.name }" class="btn
-					btn-sm btn-primary btn-add-to-cart-list mb-0
+					btn-sm btn-primary btn-add-to-cart-list w-100 mt-2
 					${ item.in_cart ? 'hidden' : '' }"
 					data-item-code="${ item.item_code }"
-					style="margin-top: 0px !important; max-height: 30px; float: right;
-						padding: 0.25rem 1rem; min-width: 135px;">
+					>
 					<span class="mr-2">
 						<svg class="icon icon-md">
 							<use href="#icon-assets"></use>
