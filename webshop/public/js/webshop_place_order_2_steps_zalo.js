@@ -13,11 +13,11 @@ function place_order_case_1_dialog(e){
 	// let seven_days_later = frappe.datetime.add_days(frappe.datetime.nowdate(), 7);
 	// let seven_days_later=new Date()
 	current_step = 1;
-		if (frappe.boot && !frappe.boot.sysdefaults) {
-		frappe.boot.sysdefaults = {};
+	if (frappe.boot && !frappe.boot.sys_defaults) {
+		frappe.boot.sys_defaults = {};
 	}
-	if (frappe.boot && frappe.boot.sysdefaults && frappe.boot.sysdefaults.use_number_format_from_currency === undefined) {
-		frappe.boot.sysdefaults.use_number_format_from_currency = 0; // or 1 depending on your preference
+	if (frappe.boot && frappe.boot.sys_defaults && frappe.boot.sys_defaults.use_number_format_from_currency === undefined) {
+		frappe.boot.sys_defaults.use_number_format_from_currency = 0; // or 1 depending on your preference
 	}
 	let d = new frappe.ui.Dialog({
 		title: __('Nhận thanh toán'),
