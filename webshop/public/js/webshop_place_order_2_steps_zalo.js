@@ -27,7 +27,8 @@ function place_order_case_1_dialog(e){
 			{
 				label: __('Số tiền khách thanh toán'),
 				fieldname: 'amount_received',
-				fieldtype: 'Float',
+				fieldtype: 'Currency',
+				options: 'VND',
 				default: amount
 			},
 			{
@@ -40,7 +41,8 @@ function place_order_case_1_dialog(e){
 			{
 				label: __(''),
 				fieldname: 'grand_total',
-				fieldtype: 'Float',
+				fieldtype: 'Currency',
+				options: 'VND',
 				default: grand_total,
 				hidden: 1
 			},
