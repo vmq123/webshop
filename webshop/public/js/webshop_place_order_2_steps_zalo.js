@@ -19,6 +19,14 @@ function place_order_case_1_dialog(e){
 	if (frappe.boot && frappe.boot.sys_defaults && frappe.boot.sys_defaults.use_number_format_from_currency === undefined) {
 		frappe.boot.sys_defaults.use_number_format_from_currency = 0; // or 1 depending on your preference
 	}
+
+	if (!frappe.sys_defaults) {
+		frappe.sys_defaults = {};
+	}
+	if (frappe.sys_defaults && frappe.sys_defaults.use_number_format_from_currency === undefined) {
+		frappe.sys_defaults.use_number_format_from_currency = 0; // or 1 depending on your preference
+	}
+
 	let d = new frappe.ui.Dialog({
 		title: __('Nhận thanh toán'),
 		fields: [
