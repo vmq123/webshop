@@ -288,6 +288,13 @@ frappe.ready(function() {
 			time_zone: "Asia/Ho_Chi_Minh"
         }
     }
+	// 20260915
+	if (!frappe.sys_defaults) {
+		frappe.sys_defaults = {};
+	}
+	if (frappe.sys_defaults && frappe.sys_defaults.use_number_format_from_currency === undefined) {
+		frappe.sys_defaults.use_number_format_from_currency = 0; // or 1 depending on your preference
+	}
 });
 
 function show_terms() {
