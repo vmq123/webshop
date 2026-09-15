@@ -288,7 +288,7 @@ frappe.ready(function() {
 			time_zone: "Asia/Ho_Chi_Minh"
         }
     }
-	// 20260915
+	// 20260915 add this to prevent error when open a dialog from /cart page
 	if (!frappe.sys_defaults) {
 		frappe.sys_defaults = {};
 	}
